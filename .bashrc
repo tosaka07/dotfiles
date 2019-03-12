@@ -73,8 +73,14 @@ function _emoji() {
 export PS1='\[\e[0;34m\]\W\[\e[m\] on\[\e[0;35m\]$(__git_ps1)\[\e[m\] \$ '
 # export PS1='\[\e[37;100m\] \# \[\e[90;47m\]\[\e[30;47m\] \W \[\e[37m\]$(__git_ps1 "\[\e[37;102m\] \[\e[30m\] %s \[\e[0;92m\]")\[\e[49m\]\[\e[m\] \$ '
 
+# nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-export PATH="$HONE/.jenv/bin:$PATH"
-eval "$(jenv init -)"
+
+# jenv
+# export PATH="$HONE/.jenv/bin:$PATH"
+# eval "$(jenv init -)"
+
+# rbenv
+eval "$(rbenv init -)"
