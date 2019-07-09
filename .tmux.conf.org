@@ -91,22 +91,27 @@ Mem: #{mem_percentage}%%#[fg=colour254] \
 %Y/%m/%d(%a) %H:%M "
 
 # ペイン線
-set -g pane-border-style bg=colour0,fg=colour238
-set -g pane-active-border-style bg=colour0,fg=colour119
+set -g pane-border-bg colour0
+set -g pane-border-fg colour238
+set -g pane-active-border-bg colour0
+set -g pane-active-border-fg colour119
 
 # ステータスバー
 set -g status-position bottom
 set -g status-justify left
-set -g status-style bg=colour234
+set -g status-bg colour234
 
 # Window
-setw -g window-status-current-style bg=colour239,top
+setw -g window-status-current-bg colour239
+setw -g window-status-current-attr top
 setw -g window-status-current-format '\
 #[fg=colour239]#[bg=colour234]#[bg=colour239]#[fg=colour119]\
 #I#[fg=colour249]:#[fg=colour255]#W#[fg=colour249]\
 #F#[fg=colour239]#[bg=colour234]'
 
-setw -g window-status-style fg=colour244,bg=colour234,none
+setw -g window-status-fg colour244
+setw -g window-status-bg colour234
+setw -g window-status-attr none
 setw -g window-status-format ' #I#[fg=colour237]:#[fg=colour250]#W#[fg=colour244]#F '
 
 # ステータスバーを1秒毎に描画し直す

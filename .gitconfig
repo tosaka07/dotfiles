@@ -122,6 +122,7 @@
   autocrlf = false
 	editor = vim
   excludesfile = ~/.yadr/git/gitignore
+	ignorecase = false
 [advice]
   statusHints = false
 [diff]
