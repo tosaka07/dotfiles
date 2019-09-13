@@ -8,3 +8,5 @@ do
     echo "$f"
     unlink ~/$f
 done
+
+unlink ~/.config/alacritty/alacritty.yml

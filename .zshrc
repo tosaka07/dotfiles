@@ -1,6 +1,7 @@
+# zmodload zsh/zprof && zprof
+
 # Starship
 eval "$(starship init zsh)"
-
 
 # Source Zshrc.
 if [[ -d "${ZDOTDIR:-$HOME/.zsh}" ]]; then
@@ -12,3 +13,6 @@ if [[ -d "${ZDOTDIR:-$HOME/.zsh}" ]]; then
   source "${ZDOTDIR:-$HOME/.zsh/completion.zsh}"
 fi
 
+# if (which zprof > /dev/null 2>&1) ;then
+#   zprof
+# fi
