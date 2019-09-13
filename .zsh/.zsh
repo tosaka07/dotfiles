@@ -1,0 +1,1 @@
+/Users/tosaka/dotfiles/.zsh

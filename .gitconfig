@@ -142,4 +142,4 @@
 [fetch]
 	prune = true
 [ghq]
-	root = /Users/y41153/workspace/sources
+	root = ~/workspace/sources
