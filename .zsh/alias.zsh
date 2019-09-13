@@ -18,3 +18,11 @@ alias egrep='egrep --color=auto'
 # Vim
 alias vi="nvim"
 alias vim="nvim"
+
+# colordiff
+if hash 'colordiff'; then
+    alias diff='colordiff -u'
+else
+    alias diff='diff -u'
+fi
+
