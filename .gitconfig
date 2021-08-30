@@ -119,6 +119,7 @@
   # the usual default is to push all branches
 	default = current
 [core]
+  excludesfile = ~/.config/git/ignore
   autocrlf = false
   editor = vim
   ignorecase = false
