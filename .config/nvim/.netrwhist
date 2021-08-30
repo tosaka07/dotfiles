@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =6
+let g:netrw_dirhist_6='/Users/y41153/dotfiles/.zsh'
+let g:netrw_dirhist_5='/Users/y41153/dotfiles'
+let g:netrw_dirhist_4='/Users/y41153'
+let g:netrw_dirhist_3='/Users/y41153/dotfiles'
+let g:netrw_dirhist_2='/Users/y41153/dotfiles/.zsh'
+let g:netrw_dirhist_1='/Users/y41153/dotfiles'
+let g:netrw_dirhist_0='/Users/y41153'
+let g:netrw_dirhist_9='/Users/y41153/workspace/sources/github.com/cam-inc/fensi-ios'
+let g:netrw_dirhist_8='/Users/y41153/workspace/sources/github.com/cam-inc/fensi-ios/Carthage/Build'
+let g:netrw_dirhist_7='/Users/y41153/workspace/sources/github.com/cam-inc/fensi-ios/Carthage'
