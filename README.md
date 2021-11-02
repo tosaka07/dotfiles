@@ -1,12 +1,15 @@
 # dotfiles
 
-use [zsh4humans](https://github.com/romkatv/zsh4humans).
+I use [zsh4humans](https://github.com/romkatv/zsh4humans).
 
+## Commands
+
+For update,
 ```
-# update
 z4h update
+```
 
-
-# interface configure
+For configure interface
+```
 p10k configure
 ```
