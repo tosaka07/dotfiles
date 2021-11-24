@@ -1,4 +1,8 @@
 # ---------------
+# z4h
+# ---------------
+
+# ---------------
 # Export
 # ---------------
 
@@ -26,6 +30,9 @@ elif [ "${ARCH}" = "arm64" ]; then
 else
   echo "Unknown architecture: ${ARCH}"
 fi
+
+# oh-my-zsh
+plugins=(asdf)
 
 # Remove duplicates PATH
 typeset -gU PATH
@@ -76,8 +83,7 @@ function ghq-fzf() {
   zle -R -c
 }
 zle -N ghq-fzf
-bindkey '^g' ghq-fzf 
-
+z4h bindkey ghq-fzf Ctrl+G
 
 # branch + fzf
 function branch-fzf() {
@@ -87,7 +93,7 @@ function branch-fzf() {
   zle accept-line
 }
 zle -N branch-fzf
-bindkey '^b' branch-fzf
+z4h bindkey branch-fzf Ctrl+B
 
 # delete xcode cache
 function delete-xcode-cache() {

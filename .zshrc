@@ -6,7 +6,7 @@
 
 # Periodic auto-update on Zsh startup: 'ask' or 'no'.
 # You can manually run `z4h update` to update everything.
-zstyle ':z4h:' auto-update      'no'
+zstyle ':z4h:' auto-update      'yes'
 # Ask whether to auto-update this often; has no effect if auto-update is 'no'.
 zstyle ':z4h:' auto-update-days '28'
 
@@ -24,7 +24,7 @@ zstyle ':z4h:bindkey' keyboard  'mac'
 zstyle ':z4h:autosuggestions' forward-char 'accept'
 
 # Recursively traverse directories when TAB-completing files.
-zstyle ':z4h:fzf-complete' recurse-dirs 'yes'
+zstyle ':z4h:fzf-complete' recurse-dirs 'no'
 
 # Enable direnv to automatically source .envrc files.
 zstyle ':z4h:direnv'         enable 'no'
@@ -62,13 +62,14 @@ path=(~/bin $path)
 export GPG_TTY=$TTY
 
 # Source additional local files if they exist.
-z4h source ~/.env.zsh
+# z4h source ~/.env.zsh
+z4h source -c ~/dotfiles/my.zsh
 
 # Use additional Git repositories pulled in with `z4h install`.
 #
 # This is just an example that you should delete. It does nothing useful.
-z4h source ohmyzsh/ohmyzsh/lib/diagnostics.zsh  # source an individual file
-z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock  # load a plugin
+# z4h source ohmyzsh/ohmyzsh/lib/diagnostics.zsh  # source an individual file
+# z4h load   ohmyzsh/ohmyzsh/plugins/asdf
 
 # Define key bindings.
 z4h bindkey undo Ctrl+/  # undo the last command line change
@@ -93,5 +94,3 @@ compdef _directories md
 setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
-# Load my zsh settings
-source $HOME/dotfiles/my.zsh
