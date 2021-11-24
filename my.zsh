@@ -31,9 +31,6 @@ else
   echo "Unknown architecture: ${ARCH}"
 fi
 
-# oh-my-zsh
-plugins=(asdf)
-
 # Remove duplicates PATH
 typeset -gU PATH
 
