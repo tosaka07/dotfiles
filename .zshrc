@@ -56,7 +56,7 @@ z4h install ohmyzsh/ohmyzsh || return
 z4h init || return
 
 # Extend PATH.
-path=(~/bin $path)
+# path=(~/bin $path)
 
 # Export environment variables.
 export GPG_TTY=$TTY
@@ -69,7 +69,10 @@ z4h source -c ~/dotfiles/my.zsh
 #
 # This is just an example that you should delete. It does nothing useful.
 # z4h source ohmyzsh/ohmyzsh/lib/diagnostics.zsh  # source an individual file
-z4h load   ohmyzsh/ohmyzsh/plugins/asdf
+# z4h load   ohmyzsh/ohmyzsh/plugins/asdf
+
+# Use Oh My Zsh Plugins
+plugins=(asdf)
 
 # Define key bindings.
 z4h bindkey undo Ctrl+/  # undo the last command line change
