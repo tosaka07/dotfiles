@@ -1,13 +1,13 @@
-# ---------------
-# z4h
-# ---------------
+# *Warning*
+# This shell assumes that you are using z4h.
+# see: https://github.com/romkatv/zsh4humans
 
 # ---------------
 # Export
 # ---------------
 
 # ENV
-source "$HOME/dotfiles/ENV.sh"
+z4h source "$HOME/dotfiles/ENV.sh"
 
 # Reset the paths
 if [ -x /usr/libexec/path_helper ]; then
@@ -22,17 +22,21 @@ if [ "${ARCH}" = "x86_64" ]; then
   if [ "$(sysctl -in sysctl.proc_translated)" = "1" ]; then
     echo "Running on Rosetta 2"
   else
-    echo "Running on native Intel"
+    echo "Running on Native Intel"
   fi
 elif [ "${ARCH}" = "arm64" ]; then
   export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
   echo "Running on ARM64"
 else
-  echo "Unknown architecture: ${ARCH}"
+  echo "Running on Unknown architecture: ${ARCH}"
 fi
+
+# ASDF
+z4h source -- ${HOMEBREW_PREFIX:+$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh}
 
 # Remove duplicates PATH
 typeset -gU PATH
+
 
 # ---------------
 # Alias
@@ -54,6 +58,7 @@ fi
 
 alias ishell="arch -x86_64 /bin/zsh"
 alias ashell="arch -arm64 /bin/zsh"
+
 
 # ---------------
 # Option
@@ -96,3 +101,4 @@ z4h bindkey branch-fzf Ctrl+B
 function delete-xcode-cache() {
   rm -rf ~/Library/Developer/Xcode/DerivedData/*  
 }
+
