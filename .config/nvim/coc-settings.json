@@ -1,0 +1,6 @@
+{
+  "flutter.sdk.flutter-lookup": "asdf which flutter",
+  "flutter.sdk.dart-lookup": "asdf which dart",
+  "flutter.lsp.initialization.closingLabels": false,
+  "flutter.UIPath": true
+}

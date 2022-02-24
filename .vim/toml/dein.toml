@@ -1,0 +1,61 @@
+[[plugins]] # Dark power plugin manager
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'EdenEast/nightfox.nvim'
+hook_add = '''
+lua << EOF
+local nightfox = require('nightfox')
+nightfox.setup({
+    fox = 'nightfox',
+    transparent = false,
+    terminal_colors = true,
+    styles = {
+        comments = 'italic',
+    },
+})
+nightfox.load()
+EOF
+'''
+
+[[plugins]] # Modern and light status line.
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+  source ~/dotfiles/.vim/plugins/lightline.vim
+'''
+
+[[plugins]]
+repo = 'lambdalisue/fern.vim'
+depends = ['fern-git-status.vim', 'fern-preview.vim', 'nerdfont.vim', 'fern-renderer-nerdfont.vim', 'glyph-palette.vim']
+hook_add = '''
+  let g:fern#default_hidden=1
+  let g:fern#drawer_width = 40
+
+  let hide_dirs  = '^\%(\.git\|node_modules\)$'
+  let hide_files = '\%(\.byebug\|\.DS_Store\|\.ruby-\)\+'
+  let g:fern#default_exclude = hide_dirs . '\|' . hide_files
+'''
+
+[[plugins]]
+repo = 'lewis6991/impatient.nvim'
+hook_source = '''
+  lua require('impatient')
+'''
+
+[[plugins]]
+repo = 'nvim-telescope/telescope.nvim'
+depends = ['plenary.nvim']
+
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter'
+ 
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+
+[[plugins]]
+repo = "neoclide/coc.nvim"
+merge = 0
+rev = "release"
+hook_add = """
+  source ~/dotfiles/.vim/rc/coc.vim
+"""

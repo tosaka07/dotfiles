@@ -99,6 +99,6 @@ z4h bindkey branch-fzf Ctrl+B
 
 # delete xcode cache
 function delete-xcode-cache() {
-  rm -rf ~/Library/Developer/Xcode/DerivedData/*  
+  rm -rf ~/Library/Developer/Xcode/DerivedData/*  
 }
 
