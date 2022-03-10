@@ -7,7 +7,9 @@
 # ---------------
 
 # ENV
-z4h source "$HOME/dotfiles/ENV.sh"
+if [ ! -f ~/dotfiles/ENV.sh ]; then
+  z4h source "$HOME/dotfiles/ENV.sh"
+fi
 
 # Reset the paths
 if [ -x /usr/libexec/path_helper ]; then
