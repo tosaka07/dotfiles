@@ -34,6 +34,11 @@ fi
 # ASDF
 z4h source -- ${HOMEBREW_PREFIX:+$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh}
 
+if type gcloud >/dev/null 2>&1; then
+  z4h source ~/.asdf/installs/gcloud/376.0.0/completion.zsh.inc
+  z4h source ~/.asdf/installs/gcloud/376.0.0/path.zsh.inc
+fi
+
 # Remove duplicates PATH
 typeset -gU PATH
 
