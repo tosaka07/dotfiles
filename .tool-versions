@@ -1,5 +1,6 @@
-deno 1.19.1
+deno 1.21.0
 nodejs 17.6.0
+awscli 2.4.6
 python 3.10.1 2.7.18
 ruby 2.7.3
 java openjdk-17.0.2
