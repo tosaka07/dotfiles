@@ -47,6 +47,7 @@ ln -s ~/dotfiles/.zshrc ~/
 ln -s ~/dotfiles/.gitconfig ~/
 ln -s ~/dotfiles/.asdfrc ~/
 ln -s ~/dotfiles/.tmux.conf ~/
+ln -s ~/dotfiles/.emacs.d ~/
 ln -s ~/dotfiles/.p10k.zsh ~/
 ln -s ~/dotfiles/.asdfrc ~/
 ln -s ~/dotfiles/.tool-versions ~/
@@ -71,5 +72,11 @@ curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
 python2 get-pip.py && rm get-pip.py
 python2 -m pip install --user --upgrade pynvim
 
+
+# Screenshot settings
+echo "Configure Screenshot settings..."
+defaults write com.apple.screencapture type jpg 
+defaults write com.apple.screencapture name Screenshot 
+defaults write com.apple.screencapture location ~/Pictures/Screenshot/
 
 echo "Done!"

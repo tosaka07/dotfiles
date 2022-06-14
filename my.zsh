@@ -41,6 +41,11 @@ if type "dart" > /dev/null 2>&1; then
   export PATH="$HOME/.pub-cache/bin:$PATH"
 fi
 
+# Android
+if [ -d "$HOME/Library/Android/sdk/platform-tools" ]; then
+  export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH"
+fi
+
 #if type "gcloud" > /dev/null 2>&1; then
 #  z4h source ~/.asdf/installs/gcloud/376.0.0/completion.zsh.inc
 #  z4h source ~/.asdf/installs/gcloud/376.0.0/path.zsh.inc
@@ -66,6 +71,10 @@ fi
 if type "nvim" > /dev/null 2>&1; then
   alias vi="nvim"
   alias vim="nvim"
+fi
+
+if type "emacs" > /dev/null 2>&1; then
+  alias e="emacs"
 fi
 
 alias ishell="arch -x86_64 /bin/zsh"
