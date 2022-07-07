@@ -21,7 +21,7 @@ EOF
 [[plugins]] # Modern and light status line.
 repo = 'itchyny/lightline.vim'
 hook_add = '''
-  source ~/dotfiles/.vim/plugins/lightline.vim
+  source ~/.config/nvim/plugins/lightline.vim
 '''
 
 [[plugins]]
@@ -57,5 +57,5 @@ repo = "neoclide/coc.nvim"
 merge = 0
 rev = "release"
 hook_add = """
-  source ~/dotfiles/.vim/rc/coc.vim
+  source ~/.config/nvim/rc/coc.vim
 """

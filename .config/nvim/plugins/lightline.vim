@@ -139,7 +139,7 @@ let g:lightline.component_expand_type.lsp_warnings = 'warning'
 
 " LightlineUpdate_Command{{{
 
-command! -bar LightlineUpdate source ~/dotfiles/.vim/plugins/lightline.vim|
+command! -bar LightlineUpdate source ~/.config/nvim/plugins/lightline.vim|
     \ call lightline#init()|
     \ call lightline#colorscheme()|
     \ call lightline#update()

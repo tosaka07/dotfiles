@@ -1,4 +1,4 @@
-source ~/dotfiles/.vim/rc/keybinding.vim
-source ~/dotfiles/.vim/rc/dein.vim
-source ~/dotfiles/.vim/rc/fern.vim
-source ~/dotfiles/.vim/rc/option.vim
+source ~/.config/nvim/rc/keybinding.vim
+source ~/.config/nvim/rc/dein.vim
+source ~/.config/nvim/rc/fern.vim
+source ~/.config/nvim/rc/option.vim
