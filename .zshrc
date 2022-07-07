@@ -11,7 +11,7 @@ zstyle ':z4h:' auto-update      'yes'
 zstyle ':z4h:' auto-update-days '28'
 
 # Start tmux if not already in tmux.
-zstyle ':z4h:' start-tmux       command tmux -u new -A -D -t common
+# zstyle ':z4h:' start-tmux       command tmux -u new -A -D -t common
 
 # Move prompt to the bottom when zsh starts and on Ctrl+L.
 zstyle ':z4h:' prompt-at-bottom 'yes'
@@ -27,7 +27,7 @@ zstyle ':z4h:autosuggestions' forward-char 'accept'
 zstyle ':z4h:fzf-complete' recurse-dirs 'no'
 
 # Enable direnv to automatically source .envrc files.
-zstyle ':z4h:direnv'         enable 'no'
+zstyle ':z4h:direnv'         enable 'yes'
 # Show "loading" and "unloading" notifications from direnv.
 zstyle ':z4h:direnv:success' notify 'yes'
 

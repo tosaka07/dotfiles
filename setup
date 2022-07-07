@@ -44,14 +44,14 @@ rm ~/.p10k.zsh
 echo "Symlink files..."
 ln -s ~/dotfiles/.zshenv ~/
 ln -s ~/dotfiles/.zshrc ~/
-ln -s ~/dotfiles/.gitconfig ~/
-ln -s ~/dotfiles/.asdfrc ~/
-ln -s ~/dotfiles/.tmux.conf ~/
-ln -s ~/dotfiles/.emacs.d ~/
 ln -s ~/dotfiles/.p10k.zsh ~/
-ln -s ~/dotfiles/.asdfrc ~/
 ln -s ~/dotfiles/.tool-versions ~/
-ln -s ~/dotfiles/.config/nvim ~/.config/ 
+ln -s ~/dotfiles/.config/nvim ~/.config/
+ln -s ~/dotfiles/.config/emacs ~/.config/
+ln -s ~/dotfiles/.config/git ~/.config/
+ln -s ~/dotfiles/.config/wezterm ~/.config/
+ln -s ~/dotfiles/.config/asdf ~/.config/
+ln -s ~/dotfiles/.config/tmux ~/.config/
 
 # asdf
 echo "Install SDK via asdf"

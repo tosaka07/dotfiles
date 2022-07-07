@@ -1,7 +1,7 @@
 # set your user tokens as environment variables, such as ~/.secrets
 # See the README for examples.
 [color]
-	ui = true
+  ui = true
 [color "branch"]
   current = yellow reverse
   local = yellow
@@ -121,9 +121,10 @@
 [core]
   excludesfile = ~/.config/git/ignore
   autocrlf = false
-  editor = vim
+  editor = "emacs -nw"
   ignorecase = false
   quotepath = false
+  pager = delta
 [advice]
   statusHints = false
 [diff]
@@ -149,3 +150,16 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
+[pager]
+  diff = delta
+  log = delta
+  reflog = delta
+  show = delta
+[delta]
+  plus-style = "syntax #012800"
+  minus-style = "syntax #340001"
+  syntax-theme = Monokai Extended
+  navigate = true
+  line-numbers = true
+[interactive]
+  diffFilter = delta --color-only

@@ -46,6 +46,18 @@ if [ -d "$HOME/Library/Android/sdk/platform-tools" ]; then
   export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH"
 fi
 
+# git-delta
+if ! type "delta" > /dev/null 2>&1; then
+  echo "delta is not installed, please install it for git diffs with the following command."
+  echo "  brew install git-delta"
+fi
+
+# XDG
+export XDG_CONFIG_HOME="${HOME}/.config"
+
+# asdf
+export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/asdfrc"
+
 #if type "gcloud" > /dev/null 2>&1; then
 #  z4h source ~/.asdf/installs/gcloud/376.0.0/completion.zsh.inc
 #  z4h source ~/.asdf/installs/gcloud/376.0.0/path.zsh.inc
@@ -74,7 +86,7 @@ if type "nvim" > /dev/null 2>&1; then
 fi
 
 if type "emacs" > /dev/null 2>&1; then
-  alias e="emacs"
+  alias e="emacs -nw"
 fi
 
 alias ishell="arch -x86_64 /bin/zsh"
@@ -116,7 +128,7 @@ function branch-fzf() {
   zle accept-line
 }
 zle -N branch-fzf
-z4h bindkey branch-fzf Ctrl+B
+# z4h bindkey branch-fzf Ctrl+B
 
 # delete xcode cache
 function delete-xcode-cache() {
