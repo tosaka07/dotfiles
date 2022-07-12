@@ -8,26 +8,37 @@
                      (emacs-init-time "%.2f")
                      gcs-done)))
 
-;; Leaf
-(eval-and-compile
-  (customize-set-variable
-   'package-archives '(("org" . "https://orgmode.org/elpa/")
-                       ("melpa" . "https://melpa.org/packages/")
-                       ("gnu" . "https://elpa.gnu.org/packages/")))
-  (package-initialize)
-  (unless (package-installed-p 'leaf)
-    (package-refresh-contents)
-    (package-install 'leaf))
+(prog1 'leaf-setup
+  (eval-and-compile
+    ;; Setup straight
+    (defvar bootstrap-version)
+    (let ((bootstrap-file
+           (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+          (bootstrap-version 5))
+      (unless (file-exists-p bootstrap-file)
+        (with-current-buffer
+            (url-retrieve-synchronously
+             "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+             'silent 'inhibit-cookies)
+          (goto-char (point-max))
+          (eval-print-last-sexp)))
+      (load bootstrap-file nil 'nomessage))
 
-  (leaf leaf-keywords
-    :ensure t
-    :init
-    (leaf hydra :ensure t)
-    (leaf el-get :ensure t)
-    (leaf blackout :ensure t)
+    ;; Install leaf and leaf-keywords
+    (straight-use-package 'leaf)
+    (straight-use-package 'leaf-keywords)
+    (straight-use-package 'leaf-convert)
+    (straight-use-package 'hydra)
+    (straight-use-package 'blackout)
+    
+    (leaf leaf-keywords
+      :require t
+      :config (leaf-keywords-init))
 
-    :config
-    (leaf-keywords-init)))
+
+    )
+  
+)
 
 (leaf cus-start
   :doc "define customization properties of builtins"
@@ -77,7 +88,7 @@
   :config (global-auto-revert-mode 1))
 
 (leaf meow
-  :ensure t
+  :straight t
   :load-path "~/.config/emacs/elisp/meow/"
   :config
   (require 'meow-keybindings)
@@ -86,7 +97,7 @@
 
 (leaf magit
   :doc "a git porcelain inside Emacs."
-  :ensure t
+  :straight t
   :bind ("C-c M-m" . magit-status)
   :custom ((magit-refresh-verbose . t)
            (magit-commit-ask-to-stage quote stage)
@@ -94,7 +105,7 @@
            (magit-log-margin . '(t "%m/%d/%Y %H:%M " magit-log-margin-width t 12)))
   :config
   (leaf magit-delta
-    :ensure t
+    :straight t
     :ensure-system-package (delta . git-delta)
     :after magit
     :hook (magit-mode-hook))
@@ -102,7 +113,7 @@
 
 (leaf git-gutter
   :doc "Port of Sublime Text plugin GitGutter"
-  :ensure t
+  :straight t
   :custom
   ((git-gutter:modified-sign . "~")
    (git-gutter:added-sign . "+")
@@ -117,7 +128,7 @@
 (leaf modus-themes
   :doc "Highly accessible themes (WCAG AAA)"
   :url "https://github.com/protesilaos/modus-themes"
-  :ensure t
+  :straight t
   :init
   (setq
         modus-themes-mode-line '(borderless)
@@ -142,7 +153,7 @@
 (leaf doom-modeline
   :doc "A fancy and fast mode-line inspired by minimalism design."
   :url "https://github.com/seagle0128/doom-modeline"
-  :ensure t
+  :straight t
   :global-minor-mode (doom-modeline-mode)
   :custom
   (doom-modeline-buffer-file-name-style . 'truncate-with-project)
@@ -157,13 +168,13 @@
 (leaf rainbow-delimiters
   :doc "Highlight brackets according to their depth"
   :url "https://github.com/Fanael/rainbow-delimiters"
-  :ensure t
+  :straight t
   :hook (prog-mode-hook . rainbow-delimiters-mode))
 
 (leaf highlight-indent-guides
   :doc "Emacs minor mode to highlight indentation"
   :url "https://github.com/DarthFennec/highlight-indent-guides"
-  :ensure t
+  :straight t
   :hook (prog-mode-hook . highlight-indent-guides-mode)
   :custom
   ((highlight-indent-guides-auto-enabled . t)
@@ -173,13 +184,13 @@
 
 (leaf rainbow-mode
   :doc "Colorize color names in buffers"
-  :ensure t
+  :straight t
   :leaf-defer t
   :hook
   (web-mode-hook . rainbow-mode))
 
 ;; (leaf whitespace
-;;   :ensure t
+;;   :straight t
 ;;   :commands whitespace-mode
 ;;   :global-minor-mode global-whitespace-mode
 ;;   :custom ((whitespace-style . '(face
@@ -205,12 +216,12 @@
   :global-minor-mode global-auto-revert-mode)
 
 (leaf posframe
-  :ensure t)
+  :straight t)
 
 (leaf go-translate
   :doc "Powerful translator on Emacs. Supports multiple translation engines such as Google, Bing, deepL."
   :url "https://github.com/lorniu/go-translate"
-  :ensure t
+  :straight t
   :bind (("C-c t" . gts-do-translate))
   :config
   (setq gts-translate-list '(("en" "ja") ("ja" "en")))
@@ -223,14 +234,14 @@
 (leaf beacon
   :doc "A light that follows your cursor around so you don't lose it!"
   :url "https://github.com/Malabarba/beacon"
-  :ensure t
+  :straight t
   :config
   (beacon-mode 1))
 
 (leaf ace-window
   :doc "Quickly switch windows in Emacs"
   :url "https://github.com/abo-abo/ace-window"
-  :ensure t
+  :straight t
   :bind ("C-c w" . ace-window)
   :custom (aw-keys . '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   :custom-face
@@ -241,12 +252,12 @@
 (leaf vertico
   :doc "VERTical Interactive COmpletion"
   :url "https://github.com/minad/vertico"
-  :ensure t
+  :straight t
   :init (vertico-mode)
   :config
   (leaf vertico-directory
     :after vertico
-    :ensure nil
+    :straight nil
     :bind
     (:vertico-map
       ("RET" . vertico-directory-enter)
@@ -258,7 +269,7 @@
 (leaf consult
   :doc "Consulting completing-read"
   :url "https://github.com/minad/consult"
-  :ensure t
+  :straight t
   :preface
   (defun my-consult-line (&optional at-point)
     "Consult-line uses things-at-point."
@@ -276,66 +287,117 @@
   ("C-M-r" . consult-recent-file)
   ("C-c C-r" . consult-file-externally)
   ("C-c v" . my-consult-line)
-  ("C-c C-v" . consult-ripgrep)
   :config
   (leaf consult-dir
     :doc "Insert paths into the minibuffer prompt in Emacs"
     :url "https://github.com/karthink/consult-dir"
     :after consult
-    :ensure t
+    :straight t
     :bind (("C-c d" . consult-dir)
            (:vertico-map
             ("C-c d" . consult-dir)
             ("C-x j" . consult-dir-jump-file))))
   (leaf consult-ghq
     :after consult
-    :ensure t)
-  ;; https://github.com/minad/consult/wiki#find-files-using-fd
-  (defvar consult--fd-command nil)
-  (defun consult--fd-builder (input)
-    (unless consult--fd-command
-      (setq consult--fd-command
-            (if (eq 0 (call-process-shell-command "fdfind"))
-                "fdfind"
-              "fd")))
-    (pcase-let* ((`(,arg . ,opts) (consult--command-split input))
-                 (`(,re . ,hl) (funcall consult--regexp-compiler
-                                        arg 'extended t)))
-      (when re
-        (list :command (append
-                        (list consult--fd-command
-                              "--color=never" "--full-path"
-                              (consult--join-regexps re 'extended))
-                        opts)
-              :highlight hl))))
-  (defun consult-fd (&optional dir initial)
-    (interactive "P")
-    (let* ((prompt-dir (consult--directory-prompt "Fd" dir))
-           (default-directory (cdr prompt-dir)))
-      (find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
+    :straight t)
   :custom
   ((xref-show-xrefs-function . 'consult-xref)
    (xref-show-definitions-function . 'consult-xref)
    (consult-ghq-find-function . 'find-file)
    (consult-project-root-function . #'projectile-project-root)
    (consult-ripgrep-command . "rg --null --line-buffered --color=ansi --max-columns=1000 --no-heading --line-number --ignore-case . -e ARG OPTS"))
-  
-)
+  )
+
+(leaf affe
+  :doc "Asynchronous Fuzzy Finder for Emacs"
+  :url "https://github.com/minad/affe"
+  :straight t
+  :bind
+  ("C-c f" . affe-find)
+  ("C-c C-f" . affe-grep))
 
 (leaf marginalia
-  :doc
-  "Marginalia in the minibuffer"
+  :doc "Marginalia in the minibuffer"
   :url "https://github.com/minad/marginalia"
-  :ensure t
+  :straight t
   :init (marginalia-mode))
 
 (leaf orderless
   :doc "Emacs completion style that matches multiple regexps in any order"
   :url "https://github.com/oantolin/orderless"
-  :ensure t
+  :straight t
   :custom
   (completion-styles . '(orderless))
   (completion-category-overrides . '((file (styles basic partial-completion)))))
+
+(leaf corfu
+  :doc "Completion Overlay Region FUnction"
+  :url "https://github.com/minad/corfu"
+  :straight t
+  :global-minor-mode global-corfu-mode
+  :custom
+  (corfu-auto . t)
+  (corfu-cycle . t)
+  (corfu-quit-at-boundary . nil)
+  (corfu-quit-no-match . nil)
+  (completion-cycle-threshold . 3)
+  :config
+  (leaf corfu-doc
+    :doc "Documentation popup for Corfu"
+    :url "https://github.com/galeo/corfu-doc"
+    :straight t
+    :hook (corfu-mode-hook . corfu-doc-mode))
+  (leaf corfu-terminal
+    :straight (popon :type git :repo "https://codeberg.org/akib/emacs-popon.git")
+    :straight (corfu-terminal :type git :repo "https://codeberg.org/akib/emacs-corfu-terminal.git")
+    :straight (corfu-doc-terminal :type git :repo "https://codeberg.org/akib/emacs-corfu-doc-terminal.git")
+    :init
+    (unless (display-graphic-p)
+      (corfu-terminal-mode +1)
+      (corfu-doc-terminal-mode +1)))
+  )
+
+(leaf cape
+  :doc "Completion At Point Extensions"
+  :url "https://github.com/minad/cape"
+  :straight 
+  :bind (("C-c p p" . completion-at-point) ;; capf
+         ("C-c p t" . complete-tag)        ;; etags
+         ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
+         ("C-c p h" . cape-history)
+         ("C-c p f" . cape-file)
+         ("C-c p k" . cape-keyword)
+         ("C-c p s" . cape-symbol)
+         ("C-c p a" . cape-abbrev)
+         ("C-c p i" . cape-ispell)
+         ("C-c p l" . cape-line)
+         ("C-c p w" . cape-dict)
+         ("C-c p \\" . cape-tex)
+         ("C-c p _" . cape-tex)
+         ("C-c p ^" . cape-tex)
+         ("C-c p &" . cape-sgml)
+         ("C-c p r" . cape-rfc1345))
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-keyword)
+  )
+
+(leaf icons-in-terminal
+  :doc "Use any fonts in the terminal without replacing or patching"
+  :url "https://github.com/sebastiencs/icons-in-terminal"
+  :straight t
+  )
+
+(leaf treemacs
+  :doc "a tree layout file explorer for Emacs"
+  :url "https://github.com/Alexander-Miller/treemacs"
+  :straight t
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :bind ("C-c e" . treemacs)
+  )
 
 (provide 'init)
 

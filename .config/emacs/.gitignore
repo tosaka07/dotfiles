@@ -54,3 +54,8 @@ flycheck_*.el
 history
 places
 /transient/
+
+# straight
+/straight/
+
+.cache
