@@ -41,10 +41,18 @@ local commonkeys = {
 
 return {
   use_ime = true,
-  font_size = 16,
-  font = wezterm.font("Cica"),
-  color_scheme = "ayu",
-  window_background_opacity = 0.9,
+  font_size = 14,
+  font = wezterm.font_with_fallback {
+    -- "UDEV Gothic 35",
+    "UDEV Gothic 35NFLG",
+    -- "all-the-icons",
+    -- "github-octicons",
+    -- "file-icons",
+    -- "Weather Icons",
+    "icons-in-terminal",
+  },
+  color_scheme = "nord",
+  window_background_opacity = 0.95,
   text_background_opacity = 1.0,
   window_decorations = "RESIZE",
   skip_close_confirmation_for_processes_named = {"tmux"},

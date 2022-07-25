@@ -30,62 +30,66 @@
     (straight-use-package 'leaf-convert)
     (straight-use-package 'hydra)
     (straight-use-package 'blackout)
-    
     (leaf leaf-keywords
       :require t
       :config (leaf-keywords-init))
-
-
-    )
-  
-)
+    ))
 
 (leaf cus-start
   :doc "define customization properties of builtins"
   :tag "builtin" "internal"
-  :bind (("C-M-<backspace>" . delete-region)
-	       ("C-x C-p" . switch-to-prev-buffer)
-         ("C-x C-n" . switch-to-next-buffer)
-         ("C-x C-w" . kill-this-buffer))
-  :hook (after-init-hook . general-init-hook)
-  :preface
-  (defun general-init-hook nil
-    (menu-bar-mode -1)
-    (when-let ((gls (executable-find "gls")))
-      (setq insert-directory-program gls dired-use-ls-dired t)
-      (setq dired-listing-switches "-al --group-directories-first")))
-  :custom '((tab-width . 2)             
-            (frame-resize-pixelwise . t)
-            (enable-recursive-minibuffers . t)
-            (create-lockfiles)
-            (use-dialog-box)
-            (use-file-dialog)
-            (history-length . 1000)
-            (history-delete-duplicates . t)
-            (scroll-preserve-screen-position . t)
-            (scroll-conservatively . 100)
-            (mouse-wheel-scroll-amount quote (1 ((control). 5)))
-            (ring-bell-function . 'ignore)
-            (visible-bell . t)
-            (text-quoting-style . 'straight)
-            (truncate-lines . t)
-            (fringe-mode . 10)
-            (blink-cursor-mode . t)
-            (show-paren-mode . t)
-            (savehist-mode . t)
-            (recentf-auto-cleanup . 'never)
-            (save-place-mode . t)
-            (save-interprogram-paste-before-kill . t)
-            (indent-tabs-mode . nil))
-  :config
-  (defalias 'yes-or-no-p 'y-or-n-p))
+  :bind ("C-x C-w" . kill-this-buffer)
+  :preface (defun general-init-hook nil
+              (menu-bar-mode -1)
+              (when-let ((gls (executable-find "gls")))
+                (setq insert-directory-program gls dired-use-ls-dired t)
+                (setq dired-listing-switches "-al --group-directories-first")))
+            (defun on-after-init ()
+              (unless (display-graphic-p (selected-frame))
+                (set-face-background 'default "unspecified-bg" (selected-frame))))
+            (defun copy-from-osx ()
+              (shell-command-to-string "pbpaste"))
+            (defun paste-to-osx (text &optional push)
+              (let ((process-connection-type nil))
+                (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+                  (process-send-string proc text)
+                  (process-send-eof proc))))
+  :hook ((after-init-hook . general-init-hook)
+         (window-setup-hook . on-after-init))
+  :custom ((tab-width . 2)
+           (frame-resize-pixelwise . t)
+           (enable-recursive-minibuffers . t)
+           (create-lockfiles)
+           (use-dialog-box)
+           (use-file-dialog)
+;;           (set-frame-font . "-*-UDEV Gothic-normal-normal-normal-*-*-350-*-*-m-0-iso10646-1")
+           (history-length . 1000)
+           (history-delete-duplicates . t)
+           (scroll-preserve-screen-position . t)
+           (scroll-conservatively . 100)
+           (mouse-wheel-scroll-amount quote (1 ((control). 5)))
+           (ring-bell-function . 'ignore)
+           (visible-bell . t)
+           (text-quoting-style . 'straight)
+           (truncate-lines . t)
+           (fringe-mode . 10)
+           (blink-cursor-mode . t)
+           (show-paren-mode . t)
+           (savehist-mode . t)
+           (recentf-auto-cleanup . 'never)
+           (save-place-mode . t)
+           (save-interprogram-paste-before-kill . t)
+           (indent-tabs-mode . nil)
+           (interprogram-cut-function . 'paste-to-osx)
+           (interprogram-paste-function . 'copy-from-osx))
+  :config (defalias 'yes-or-no-p 'y-or-n-p))
 
 (leaf autorevert
   :doc "revert buffers when files on disk change"
   :tag "builtin"
+  :global-minor-mode global-auto-revert-mode
   :custom ((auto-revert-interval . 1)
-           (global-auto-revert-non-file-buffers . t))
-  :config (global-auto-revert-mode 1))
+           (global-auto-revert-non-file-buffers . t)))
 
 (leaf meow
   :straight t
@@ -125,7 +129,26 @@
    (git-gutter:deleted . '((t (:foreground "#ff79c6")))))
   :global-minor-mode global-git-gutter-mode)
 
+(leaf all-the-icons
+  :doc "A utility package to collect various Icon Fonts and propertize them within Emacs"
+  :url "https://github.com/domtronn/all-the-icons.el"
+  :straight t)
+
+(leaf all-the-icons-completion
+  :doc "Add icons to completion candidates in Emacs"
+  :url "https://github.com/iyefrat/all-the-icons-completion"
+  :straight t
+  :after (marginalia all-the-icons)
+  :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
+  :init (all-the-icons-completion-mode))
+
+(leaf icons-in-terminal
+  :doc "A utility package to propertize Icon Fonts in both GUI and TUI with Emacs."
+  :url "https://github.com/tosaka07/icons-in-terminal.el"
+  :straight (icons-in-terminal :type git :host github :repo "tosaka07/icons-in-terminal.el"))
+
 (leaf modus-themes
+  :disabled t
   :doc "Highly accessible themes (WCAG AAA)"
   :url "https://github.com/protesilaos/modus-themes"
   :straight t
@@ -150,20 +173,36 @@
           (t . (semilight 1.1))))
   (modus-themes-load-vivendi))
 
+(leaf doom-themes
+  :doc "A megapack of themes for GNU Emacs."
+  :straight t
+  :custom
+  (doom-themes-enable-bold . t)
+  (doom-themes-enable-italic . t)
+  (doom-ayu-dark-brighter-comments . t)
+  :config
+  (load-theme 'doom-nord t)
+  )
+
 (leaf doom-modeline
   :doc "A fancy and fast mode-line inspired by minimalism design."
   :url "https://github.com/seagle0128/doom-modeline"
   :straight t
   :global-minor-mode (doom-modeline-mode)
+  :preface
+  (defun my-icon-displayable-p ()
+    t)
+  :advice ((:before-until doom-modeline-icon-displayable-p my-icon-displayable-p))
   :custom
   (doom-modeline-buffer-file-name-style . 'truncate-with-project)
   (doom-modeline-icon . t)
-  (doom-modeline-major-mode-icon . nil)
+  (doom-modeline-unicode-fallback . nil)
+  (doom-modeline-major-mode-icon . t)
   (doom-modeline-minor-modes . nil)
   (doom-modeline-lsp . t)
   (doom-modeline-modal-icon . t)
   (doom-modeline-env-version . t)
-)
+  )
 
 (leaf rainbow-delimiters
   :doc "Highlight brackets according to their depth"
@@ -189,24 +228,6 @@
   :hook
   (web-mode-hook . rainbow-mode))
 
-;; (leaf whitespace
-;;   :straight t
-;;   :commands whitespace-mode
-;;   :global-minor-mode global-whitespace-mode
-;;   :custom ((whitespace-style . '(face
-;;                                 trailing
-;;                                 tabs
-;;                                 spaces
-;;                                 empty
-;;                                 space-mark
-;;                                 tab-mark))
-;;            (whitespace-display-mappings . '((space-mark ?\u3000 [?\u25a1])
-;;                                             (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
-;;            (whitespace-space-regexp . "\\(\u3000+\\)")
-;;            (whitespace-global-modes . '(emacs-lisp-mode shell-script-mode sh-mode python-mode org-mode))
-;;            )
-;;   )
-
 (leaf paren
   :doc "highlight matching paren"
   :tag "builtin"
@@ -224,28 +245,26 @@
   :straight t
   :bind (("C-c t" . gts-do-translate))
   :config
-  (setq gts-translate-list '(("en" "ja") ("ja" "en")))
-  (setq gts-default-translator
-	  (gts-translator
-	   :picker (gts-prompt-picker)
-	   :engines (list (gts-bing-engine) (gts-google-engine))
-	   :render (gts-buffer-render))))
+  (gts-translate-list . '(("en" "ja") ("ja" "en")))
+  (gts-default-translator . 
+    (gts-translator
+      :picker (gts-prompt-picker)
+      :engines (list (gts-bing-engine) (gts-google-engine))
+      :render (gts-buffer-render))))
 
 (leaf beacon
   :doc "A light that follows your cursor around so you don't lose it!"
   :url "https://github.com/Malabarba/beacon"
   :straight t
-  :config
-  (beacon-mode 1))
+  :global-minor-mode beacon-mode)
 
 (leaf ace-window
   :doc "Quickly switch windows in Emacs"
   :url "https://github.com/abo-abo/ace-window"
   :straight t
   :bind ("C-c w" . ace-window)
-  :custom (aw-keys . '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  :custom-face
-  (aw-leading-char-face . '((t (:height 4.0 :foreground "#f1fa8c")))) )
+  :setq-default (aw-keys . '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  :custom-face (aw-leading-char-face . '((t (:height 4.0 :foreground "#f1fa8c")))))
 
 ;; 標準機能の fido-vertical-mode でもいいが、
 ;; Tab を押すと Window に変換候補が表示されるため修正されるまでこちらを使う
@@ -253,7 +272,7 @@
   :doc "VERTical Interactive COmpletion"
   :url "https://github.com/minad/vertico"
   :straight t
-  :init (vertico-mode)
+  :global-minor-mode vertico-mode
   :config
   (leaf vertico-directory
     :after vertico
@@ -287,6 +306,7 @@
   ("C-M-r" . consult-recent-file)
   ("C-c C-r" . consult-file-externally)
   ("C-c v" . my-consult-line)
+  ("C-c C-p" . consult-yank-from-kill-ring)
   :config
   (leaf consult-dir
     :doc "Insert paths into the minibuffer prompt in Emacs"
@@ -299,11 +319,11 @@
             ("C-x j" . consult-dir-jump-file))))
   (leaf consult-ghq
     :after consult
+    :bind ("M-g g" . consult-ghq-find)
     :straight t)
-  :custom
+  :setq
   ((xref-show-xrefs-function . 'consult-xref)
    (xref-show-definitions-function . 'consult-xref)
-   (consult-ghq-find-function . 'find-file)
    (consult-project-root-function . #'projectile-project-root)
    (consult-ripgrep-command . "rg --null --line-buffered --color=ansi --max-columns=1000 --no-heading --line-number --ignore-case . -e ARG OPTS"))
   )
@@ -320,13 +340,13 @@
   :doc "Marginalia in the minibuffer"
   :url "https://github.com/minad/marginalia"
   :straight t
-  :init (marginalia-mode))
+  :global-minor-mode marginalia-mode)
 
 (leaf orderless
   :doc "Emacs completion style that matches multiple regexps in any order"
   :url "https://github.com/oantolin/orderless"
   :straight t
-  :custom
+  :setq
   (completion-styles . '(orderless))
   (completion-category-overrides . '((file (styles basic partial-completion)))))
 
@@ -360,7 +380,7 @@
 (leaf cape
   :doc "Completion At Point Extensions"
   :url "https://github.com/minad/cape"
-  :straight 
+  :straight t
   :bind (("C-c p p" . completion-at-point) ;; capf
          ("C-c p t" . complete-tag)        ;; etags
          ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
@@ -377,16 +397,10 @@
          ("C-c p ^" . cape-tex)
          ("C-c p &" . cape-sgml)
          ("C-c p r" . cape-rfc1345))
-  :init
+  :defer-config
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-keyword)
-  )
-
-(leaf icons-in-terminal
-  :doc "Use any fonts in the terminal without replacing or patching"
-  :url "https://github.com/sebastiencs/icons-in-terminal"
-  :straight t
   )
 
 (leaf treemacs
@@ -397,7 +411,32 @@
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
   :bind ("C-c e" . treemacs)
+  :setq
+  (treemacs-follow-mode . t)
+  (treemacs-filewatch-mode . t)
   )
+
+(leaf vundo
+  :doc "Visualize the undo tree."
+  :url "https://github.com/casouri/vundo"
+  :straight t
+  :bind ("C-c u" . vundo))
+
+(leaf whitespace
+  :straight t
+  :global-minor-mode global-whitespace-mode
+  :custom ((whitespace-style . '(face
+                                 trailing
+                                 tabs
+                                 spaces
+                                 empty
+                                 space-mark
+                                 tab-mark))
+           (whitespace-display-mappings . '((space-mark ?\u3000 [?\u25a1])
+                                            (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
+           (whitespace-space-regexp . "\\(\u3000+\\)")
+           (whitespace-global-modes . '(emacs-lisp-mode shell-script-mode sh-mode python-mode org-mode))
+           ))
 
 (provide 'init)
 

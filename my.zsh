@@ -52,11 +52,43 @@ if ! type "delta" > /dev/null 2>&1; then
   echo "  brew install git-delta"
 fi
 
+# hammerspoon
+# defaults write org.hammerspoon.Hammerspoon MJConfigFile "~/.config/hammerspoon/init.lua"
+
 # XDG
-export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
 
 # asdf
-export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/asdfrc"
+export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
+export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
+
+# Android
+export ANDROID_HOME="$XDG_DATA_HOME"/android
+export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
+
+# lesshist
+export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
+
+# terminfo
+export TERMINFO="$XDG_DATA_HOME"/terminfo
+export TERMINFO_DIRS="$XDG_DATA_HOME"/terminfo:/usr/share/terminfo
+
+# node
+export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
+
+# python
+export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
+
+# zsh
+compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+export HISTFILE="$XDG_STATE_HOME"/zsh/history
+export ZDOTDIR="$HOME"/.config/zsh
+
+
 
 #if type "gcloud" > /dev/null 2>&1; then
 #  z4h source ~/.asdf/installs/gcloud/376.0.0/completion.zsh.inc
