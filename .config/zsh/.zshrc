@@ -62,7 +62,7 @@ path=(~/bin $path)
 export GPG_TTY=$TTY
 
 # Source additional local files if they exist.
-z4h source -c ~/dotfiles/my.zsh
+z4h source -c $ZDOTDIR/my.zsh
 
 # Use additional Git repositories pulled in with `z4h install`.
 #

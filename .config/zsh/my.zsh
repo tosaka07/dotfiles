@@ -60,6 +60,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_RUNTIME_DIR="/run/user/$UID"
 
 # asdf
 export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
@@ -109,7 +110,7 @@ if type "exa" > /dev/null 2>&1; then
   alias l="exa"
   alias la="exa -la"
   alias lt="exa -L=2 -T"
-  alias lt3="exa -L=3 -T"	
+  alias lt3="exa -L=3 -T"
 fi
 
 if type "nvim" > /dev/null 2>&1; then
@@ -164,7 +165,7 @@ zle -N branch-fzf
 
 # delete xcode cache
 function delete-xcode-cache() {
-  rm -rf ~/Library/Developer/Xcode/DerivedData/*  
+  rm -rf ~/Library/Developer/Xcode/DerivedData/*
 }
 
 function zsh-startuptime() {
@@ -242,7 +243,7 @@ function nvim-profiler() {
 
 
 function create-gif() {
-  function _error() { 
+  function _error() {
     echo -e "\e[31m $1 \e[m"
   }
 
@@ -266,5 +267,5 @@ function create-gif() {
     rm $palette_path
   else
     _error "ffmpeg not found."
-  fi 
+  fi
 }
