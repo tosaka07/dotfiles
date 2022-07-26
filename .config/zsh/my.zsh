@@ -51,7 +51,6 @@ z4h source -- ${HOMEBREW_PREFIX:+$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh}
 
 # Dart
 if type "dart" > /dev/null 2>&1; then
-  echo "Dart exists!"
   export PATH="$HOME/.pub-cache/bin:$PATH"
 fi
 
