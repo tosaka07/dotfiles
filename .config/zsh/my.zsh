@@ -33,11 +33,25 @@ else
 #  echo "Running on Unknown architecture: ${ARCH}"
 fi
 
-# ASDF
+# ---------------
+# Alias
+# ---------------
+
+# XDG
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_RUNTIME_DIR="/run/user/$UID"
+
+# asdf
+export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
+export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
 z4h source -- ${HOMEBREW_PREFIX:+$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh}
 
 # Dart
 if type "dart" > /dev/null 2>&1; then
+  echo "Dart exists!"
   export PATH="$HOME/.pub-cache/bin:$PATH"
 fi
 
@@ -55,23 +69,15 @@ fi
 # hammerspoon
 # defaults write org.hammerspoon.Hammerspoon MJConfigFile "~/.config/hammerspoon/init.lua"
 
-# XDG
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_STATE_HOME="$HOME/.local/state"
-export XDG_RUNTIME_DIR="/run/user/$UID"
-
-# asdf
-export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
-export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
-
 # Android
 export ANDROID_HOME="$XDG_DATA_HOME"/android
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 
 # lesshist
 export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
+
+# gnupghome
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 
 # terminfo
 export TERMINFO="$XDG_DATA_HOME"/terminfo
@@ -87,9 +93,6 @@ export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
 # zsh
 compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
 export HISTFILE="$XDG_STATE_HOME"/zsh/history
-export ZDOTDIR="$HOME"/.config/zsh
-
-
 
 #if type "gcloud" > /dev/null 2>&1; then
 #  z4h source ~/.asdf/installs/gcloud/376.0.0/completion.zsh.inc
@@ -98,11 +101,6 @@ export ZDOTDIR="$HOME"/.config/zsh
 
 # Remove duplicates PATH
 typeset -gU PATH
-
-
-# ---------------
-# Alias
-# ---------------
 
 if type "exa" > /dev/null 2>&1; then
   alias ld="exa -d"
