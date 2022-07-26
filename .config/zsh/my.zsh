@@ -65,6 +65,12 @@ if ! type "delta" > /dev/null 2>&1; then
   echo "  brew install git-delta"
 fi
 
+# GitHub CLI
+if [ type "gh" > /dev/null 2>&1 ] && [ ! -e /usr/local/share/zsh/site-functions/_gh ]; then
+  echo "Installed GitHub CLI completion!"
+  gh completion -s zsh > /usr/local/share/zsh/site-functions/_gh
+fi
+
 # hammerspoon
 # defaults write org.hammerspoon.Hammerspoon MJConfigFile "~/.config/hammerspoon/init.lua"
 
