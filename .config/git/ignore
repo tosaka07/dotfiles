@@ -58,3 +58,6 @@ DerivedData/
 
 ## emacs
 *~
+
+## direnv
+.envrc
