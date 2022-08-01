@@ -1,7 +1,7 @@
 deno 1.21.0
 nodejs 18.5.0
 awscli 2.4.6
-python 3.10.1 2.7.18
+python 3.10.1
 ruby 2.7.3
 java zulu-8.64.0.15
 dart 2.17.6

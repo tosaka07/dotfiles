@@ -56,13 +56,13 @@
                   (process-send-eof proc))))
   :hook ((after-init-hook . general-init-hook)
          (window-setup-hook . on-after-init))
+  :setq (make-backup-files . nil)
   :custom ((tab-width . 2)
            (frame-resize-pixelwise . t)
            (enable-recursive-minibuffers . t)
            (create-lockfiles)
            (use-dialog-box)
            (use-file-dialog)
-;;           (set-frame-font . "-*-UDEV Gothic-normal-normal-normal-*-*-350-*-*-m-0-iso10646-1")
            (history-length . 1000)
            (history-delete-duplicates . t)
            (scroll-preserve-screen-position . t)
@@ -146,6 +146,43 @@
   :doc "A utility package to propertize Icon Fonts in both GUI and TUI with Emacs."
   :url "https://github.com/tosaka07/icons-in-terminal.el"
   :straight (icons-in-terminal :type git :host github :repo "tosaka07/icons-in-terminal.el"))
+
+(with-eval-after-load 'all-the-icons
+
+  ;; (set-fontset-font t 'unicode "icons-in-terminal" nil 'prepend)
+
+  ;; (defalias #'all-the-icons-insert #'icons-in-terminal-insert)
+  ;; (defalias #'all-the-icons-insert-faicon #'icons-in-terminal-insert-faicon)
+  ;; (defalias #'all-the-icons-insert-fileicon #'icons-in-terminal-insert-fileicon)
+  ;; (defalias #'all-the-icons-insert-material #'icons-in-terminal-insert-material)
+  ;; (defalias #'all-the-icons-insert-octicon #'icons-in-terminal-insert-octicon)
+  ;; (defalias #'all-the-icons-insert-wicon #'icons-in-terminal-insert-wicon)
+
+  ;; (defalias #'all-the-icons-icon-for-dir #'icons-in-terminal-icon-for-dir)
+  ;; (defalias #'all-the-icons-icon-for-file #'icons-in-terminal-icon-for-file)
+  ;; (defalias #'all-the-icons-icon-for-mode #'icons-in-terminal-icon-for-mode)
+  ;; (defalias #'all-the-icons-icon-for-url #'icons-in-terminal-icon-for-url)
+
+  ;; (defalias #'all-the-icons-icon-family #'icons-in-terminal-icon-family)
+  ;; (defalias #'all-the-icons-icon-family-for-buffer #'icons-in-terminal-icon-family-for-buffer)
+  ;; (defalias #'all-the-icons-icon-family-for-file #'icons-in-terminal-icon-family-for-file)
+  ;; (defalias #'all-the-icons-icon-family-for-mode #'icons-in-terminal-icon-family-for-mode)
+  ;; (defalias #'all-the-icons-icon-for-buffer #'icons-in-terminal-icon-for-buffer)
+
+  ;; (defalias #'all-the-icons-faicon #'icons-in-terminal-faicon)
+  ;; (defalias #'all-the-icons-octicon #'icons-in-terminal-octicon)
+  ;; (defalias #'all-the-icons-fileicon #'icons-in-terminal-fileicon)
+  ;; (defalias #'all-the-icons-material #'icons-in-terminal-material)
+  ;; (defalias #'all-the-icons-wicon #'icons-in-terminal-wicon)
+
+  ;; (defalias 'all-the-icons-default-adjust 'icons-in-terminal-default-adjust)
+  ;; (defalias 'all-the-icons-color-icons 'icons-in-terminal-color-icons)
+  ;; (defalias 'all-the-icons-scale-factor 'icons-in-terminal-scale-factor)
+  ;; (defalias 'all-the-icons-icon-alist 'icons-in-terminal-icon-alist)
+  ;; (defalias 'all-the-icons-dir-icon-alist 'icons-in-terminal-dir-icon-alist)
+  ;; (defalias 'all-the-icons-weather-icon-alist 'icons-in-terminal-weather-icon-alist)
+  )
+
 
 (leaf modus-themes
   :disabled t
@@ -244,13 +281,14 @@
   :url "https://github.com/lorniu/go-translate"
   :straight t
   :bind (("C-c t" . gts-do-translate))
-  :config
-  (gts-translate-list . '(("en" "ja") ("ja" "en")))
-  (gts-default-translator . 
-    (gts-translator
-      :picker (gts-prompt-picker)
-      :engines (list (gts-bing-engine) (gts-google-engine))
-      :render (gts-buffer-render))))
+  :defer-config
+  (setq gts-translate-list '(("en" "ja") ("ja" "en")))
+  (setq gts-default-translator
+        (gts-translator
+         :picker (gts-prompt-picker)
+         :engines (list
+                   (gts-deepl-engine :auth-key (getenv "DEEPL_API_KEY") :pro nil))
+         :render (gts-buffer-render))))
 
 (leaf beacon
   :doc "A light that follows your cursor around so you don't lose it!"
@@ -263,7 +301,7 @@
   :url "https://github.com/abo-abo/ace-window"
   :straight t
   :bind ("C-c w" . ace-window)
-  :setq-default (aw-keys . '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  :setq-default (aw-keys . '(?j ?k ?h ?l ?a ?s ?d ?f ?g))
   :custom-face (aw-leading-char-face . '((t (:height 4.0 :foreground "#f1fa8c")))))
 
 ;; 標準機能の fido-vertical-mode でもいいが、
@@ -351,6 +389,7 @@
   (completion-category-overrides . '((file (styles basic partial-completion)))))
 
 (leaf corfu
+  :disabled t
   :doc "Completion Overlay Region FUnction"
   :url "https://github.com/minad/corfu"
   :straight t
@@ -378,6 +417,7 @@
   )
 
 (leaf cape
+  :disabled t
   :doc "Completion At Point Extensions"
   :url "https://github.com/minad/cape"
   :straight t
@@ -403,6 +443,11 @@
   (add-to-list 'completion-at-point-functions #'cape-keyword)
   )
 
+(leaf projectile
+  :doc "Project Interaction Library for Emacs"
+  :url "https://github.com/bbatsov/projectile"
+  :straight t)
+
 (leaf treemacs
   :doc "a tree layout file explorer for Emacs"
   :url "https://github.com/Alexander-Miller/treemacs"
@@ -410,11 +455,19 @@
   :init
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :bind ("C-c e" . treemacs)
+  :bind (("C-c e e" . treemacs-select-window)
+         ("C-c e b" . treemacs)
+         ("C-c e s" . treemacs-switch-workspace)
+         ("C-c e w" . treemacs-edit-workspaces)
+         ("C-c e a" . treemacs-add-project-to-workspace))
+  :config
+  (treemacs-resize-icons 14)
   :setq
   (treemacs-follow-mode . t)
-  (treemacs-filewatch-mode . t)
-  )
+  (treemacs-indent-guide-mode . t)
+  (treemacs-indent-guide-style . 'block)
+  (treemacs-project-follow-mode . t)
+  (treemacs-filewatch-mode . t))
 
 (leaf vundo
   :doc "Visualize the undo tree."
@@ -425,7 +478,7 @@
 (leaf whitespace
   :straight t
   :global-minor-mode global-whitespace-mode
-  :custom ((whitespace-style . '(face
+  :custom ((whitespace-styles . '(face
                                  trailing
                                  tabs
                                  spaces
@@ -437,6 +490,28 @@
            (whitespace-space-regexp . "\\(\u3000+\\)")
            (whitespace-global-modes . '(emacs-lisp-mode shell-script-mode sh-mode python-mode org-mode))
            ))
+
+(leaf yasnippet
+  :doc "A template system for Emacs"
+  :url "https://github.com/joaotavora/yasnippet"
+  :straight t
+  :global-minor-mode yas-global-mode)
+
+(leaf markdown-mode
+  :doc "Emacs Markdown Mode"
+  :url "https://github.com/jrblevin/markdown-mode"
+  :straight t
+  :mode ("\\.md\\'". gfm-mode))
+
+(leaf lsp-bridge
+  :doc "Fastest LSP client for Emacs"
+  :url "https://github.com/manateelazycat/lsp-bridge"
+  :load-path ("~/workspace/sources/github.com/manateelazycat/lsp-bridge/")
+  :require t
+  :custom (lsp-bridge-lookup-doc-tooltip-max-height . 40)
+  :config (global-lsp-bridge-mode)
+  )
+
 
 (provide 'init)
 

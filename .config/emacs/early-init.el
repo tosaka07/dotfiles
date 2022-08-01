@@ -31,4 +31,6 @@
 (push '(blink-cursor-mode . nil) default-frame-alist)
 (push '(column-number-mode . nil) default-frame-alist)
 
+(push '(font . "UDEV Gothic 35LG") default-frame-alist)
+
 (provide 'early-init)

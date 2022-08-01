@@ -54,6 +54,10 @@ if type "dart" > /dev/null 2>&1; then
   export PATH="$HOME/.pub-cache/bin:$PATH"
 fi
 
+if type "flutter" > /dev/null 2>&1; then
+  export FLUTTER_ROOT=$(asdf where flutter)
+fi
+
 # Android
 if [ -d "$HOME/Library/Android/sdk/platform-tools" ]; then
   export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH"
