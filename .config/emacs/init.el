@@ -84,6 +84,17 @@
            (interprogram-paste-function . 'copy-from-osx))
   :config (defalias 'yes-or-no-p 'y-or-n-p))
 
+(leaf exec-path-from-shell
+  :doc "Make Emacs use the $PATH set up by the user's shell"
+  :url "https://github.com/purcell/exec-path-from-shell"
+  :straight t
+  :custom
+  (exec-path-from-shell-variables . '("DEEPL_API_KEY" "FLUTTER_ROOT" "PATH"))
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize))
+  )
+
 (leaf autorevert
   :doc "revert buffers when files on disk change"
   :tag "builtin"
@@ -147,43 +158,6 @@
   :url "https://github.com/tosaka07/icons-in-terminal.el"
   :straight (icons-in-terminal :type git :host github :repo "tosaka07/icons-in-terminal.el"))
 
-(with-eval-after-load 'all-the-icons
-
-  ;; (set-fontset-font t 'unicode "icons-in-terminal" nil 'prepend)
-
-  ;; (defalias #'all-the-icons-insert #'icons-in-terminal-insert)
-  ;; (defalias #'all-the-icons-insert-faicon #'icons-in-terminal-insert-faicon)
-  ;; (defalias #'all-the-icons-insert-fileicon #'icons-in-terminal-insert-fileicon)
-  ;; (defalias #'all-the-icons-insert-material #'icons-in-terminal-insert-material)
-  ;; (defalias #'all-the-icons-insert-octicon #'icons-in-terminal-insert-octicon)
-  ;; (defalias #'all-the-icons-insert-wicon #'icons-in-terminal-insert-wicon)
-
-  ;; (defalias #'all-the-icons-icon-for-dir #'icons-in-terminal-icon-for-dir)
-  ;; (defalias #'all-the-icons-icon-for-file #'icons-in-terminal-icon-for-file)
-  ;; (defalias #'all-the-icons-icon-for-mode #'icons-in-terminal-icon-for-mode)
-  ;; (defalias #'all-the-icons-icon-for-url #'icons-in-terminal-icon-for-url)
-
-  ;; (defalias #'all-the-icons-icon-family #'icons-in-terminal-icon-family)
-  ;; (defalias #'all-the-icons-icon-family-for-buffer #'icons-in-terminal-icon-family-for-buffer)
-  ;; (defalias #'all-the-icons-icon-family-for-file #'icons-in-terminal-icon-family-for-file)
-  ;; (defalias #'all-the-icons-icon-family-for-mode #'icons-in-terminal-icon-family-for-mode)
-  ;; (defalias #'all-the-icons-icon-for-buffer #'icons-in-terminal-icon-for-buffer)
-
-  ;; (defalias #'all-the-icons-faicon #'icons-in-terminal-faicon)
-  ;; (defalias #'all-the-icons-octicon #'icons-in-terminal-octicon)
-  ;; (defalias #'all-the-icons-fileicon #'icons-in-terminal-fileicon)
-  ;; (defalias #'all-the-icons-material #'icons-in-terminal-material)
-  ;; (defalias #'all-the-icons-wicon #'icons-in-terminal-wicon)
-
-  ;; (defalias 'all-the-icons-default-adjust 'icons-in-terminal-default-adjust)
-  ;; (defalias 'all-the-icons-color-icons 'icons-in-terminal-color-icons)
-  ;; (defalias 'all-the-icons-scale-factor 'icons-in-terminal-scale-factor)
-  ;; (defalias 'all-the-icons-icon-alist 'icons-in-terminal-icon-alist)
-  ;; (defalias 'all-the-icons-dir-icon-alist 'icons-in-terminal-dir-icon-alist)
-  ;; (defalias 'all-the-icons-weather-icon-alist 'icons-in-terminal-weather-icon-alist)
-  )
-
-
 (leaf modus-themes
   :disabled t
   :doc "Highly accessible themes (WCAG AAA)"
@@ -218,7 +192,7 @@
   (doom-themes-enable-italic . t)
   (doom-ayu-dark-brighter-comments . t)
   :config
-  (load-theme 'doom-nord t)
+  (load-theme 'doom-tomorrow-night t)
   )
 
 (leaf doom-modeline
@@ -295,6 +269,13 @@
   :url "https://github.com/Malabarba/beacon"
   :straight t
   :global-minor-mode beacon-mode)
+
+(leaf smartparens
+  :straight t
+  :require smartparens-config
+  :global-minor-mode (smartparens-global-mode)
+  :hook
+  (prog-mode-hook . turn-on-smartparens-mode))
 
 (leaf ace-window
   :doc "Quickly switch windows in Emacs"
@@ -501,17 +482,132 @@
   :doc "Emacs Markdown Mode"
   :url "https://github.com/jrblevin/markdown-mode"
   :straight t
-  :mode ("\\.md\\'". gfm-mode))
+  :mode ("\\.md\\'" . gfm-mode))
+
+(leaf lsp-mode
+  :disabled t
+  :doc "LSP mode"
+  :url "https://github.com/emacs-lsp/lsp-mode"
+  :straight t
+  :after orderless cape
+  :commands lsp lsp-deferred
+  :custom `((lsp-keymap-prefix . "C-c l")
+            (read-process-output-max . ,(* 1 1024 1024))  ;; 1MB
+            (lsp-auto-guess-root . nil)
+            (lsp-headerline-breadcrumb-enable . t)
+            (lsp-log-io . nil)
+            (lsp-trace . nil)
+            (lsp-print-performance . nil)
+            (lsp-idle-delay . 0.5)
+            (lsp-document-sync-method . 2)
+            (lsp-response-timeout . 5)
+            (lsp-prefer-flymake . nil)
+            (lsp-completion-enable . t)
+            (lsp-enable-indentation . nil)
+            (lsp-restart . 'ignore)
+            (lsp-completion-provider . :none)))
+
+(leaf lsp-ui
+  :disabled t
+  :doc "UI modules for lsp-mode"
+  :url "https://github.com/emacs-lsp/lsp-ui"
+  :straight t
+  :hook (lsp-mode-hook . lsp-ui-mode)
+  :preface
+  (defun ladicle/toggle-lsp-ui-doc ()
+    (interactive)
+    (if lsp-ui-doc-mode
+        (progn
+          (lsp-ui-doc-mode -1)
+          (lsp-ui-doc--hide-frame))
+      (lsp-ui-doc-mode 1)))
+
+  :bind (lsp-mode-map
+         :package lsp-mode
+         ("C-c C-r" . lsp-ui-peek-find-references)
+         ("C-c C-j" . lsp-ui-peek-find-definitions)
+         ("C-c s"   . lsp-ui-sideline-mode)
+         ("C-c d"   . ladicle/toggle-lsp-ui-doc)
+         ("C-c i"   . lsp-ui-doc-focus-frame))
+  :custom ((lsp-ui-doc-header . t)
+           (lsp-ui-doc-delay . 2)
+           (lsp-ui-doc-include-signature . t)
+           (lsp-ui-doc-alignment . 'window)
+           (lsp-ui-doc-max-height . 30)
+           (lsp-ui-doc-show-with-mouse . nil)
+           (lsp-ui-doc-show-with-cursor . t)
+           (lsp-ui-sideline-enable . nil)
+           (lsp-ui-sideline-ignore-duplicate . t)
+           (lsp-ui-sideline-show-symbol . t)
+           (lsp-ui-sideline-show-hover . t)
+           (lsp-ui-sideline-show-diagnostics . nil)
+           (lsp-ui-sideline-show-code-actions . nil)
+           (lsp-ui-imenu-enable . nil)))
+
+(leaf lsp-dart
+  :straight t
+  :hook (dart-mode . lsp)
+  )
 
 (leaf lsp-bridge
   :doc "Fastest LSP client for Emacs"
   :url "https://github.com/manateelazycat/lsp-bridge"
   :load-path ("~/workspace/sources/github.com/manateelazycat/lsp-bridge/")
   :require t
+  :bind (("C-c ; d" . lsp-bridge-find-def-other-window)
+         ("C-c ; i" . lsp-bridge-find-impl-other-window)
+         ("C-c ; ;" . lsp-bridge-lookup-documentation)
+         ("C-c ; r" . lsp-bridge-rename)
+         ("C-c ; l" . lsp-bridge-list-diagnostics)
+         ("C-c ; h" . lsp-bridge-signature-help-fetch)
+         ("C-c ; a" . lsp-bridge-code-action)
+         ("C-c ; n" . lsp-bridge-popup-complete))
   :custom (lsp-bridge-lookup-doc-tooltip-max-height . 40)
   :config (global-lsp-bridge-mode)
   )
 
+;; (leaf dart-mode
+;;   :straight t
+;;   :mode ("\\.dart\\'"))
+
+(leaf tree-sitter-langs
+  :straight (tree-sitter-langs :type git :host github :repo "tosaka07/tree-sitter-langs"))
+
+(leaf tree-sitter
+    :url "https://github.com/ubolonton/emacs-tree-sitter"
+    :straight t
+    :require tree-sitter-langs
+    :global-minor-mode (global-tree-sitter-mode)
+    :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
+    :config
+    (tree-sitter-require 'tsx) ;; TSX
+    (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
+    ;; Hightlight
+    (tree-sitter-hl-add-patterns 'tsx
+      [
+       ;; styled.div``
+       (call_expression
+        function: (member_expression
+                   object: (identifier) @function.call
+                   (.eq? @function.call "styled"))
+        arguments: ((template_string) @property.definition
+                    (.offset! @property.definition 0 1 0 -1)))
+       ;; styled(Component)``
+       (call_expression
+        function: (call_expression
+                   function: (identifier) @function.call
+                   (.eq? @function.call "styled"))
+        arguments: ((template_string) @property.definition
+                    (.offset! @property.definition 0 1 0 -1)))
+       ])
+    )
+
+;; (leaf dart-server
+;;   :straight t
+;;   :mode ("\\.dart\\'")
+;;   :custom
+;;   (dart-server-format-on-save . t)
+;;   )
 
 (provide 'init)
 

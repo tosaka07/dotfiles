@@ -1,4 +1,6 @@
-require('impatient')
-require('opt')
-require('keybinding')
-require('plugins')
+require 'impatient'
+
+require 'rc/base'
+require 'rc/options'
+require 'rc/keymaps'
+require 'rc/plugins'

@@ -75,25 +75,25 @@ local onlyCtrl = function(ev)
 end
 
 
-module.eventWatcher = eventtap.new({events.flagsChanged, events.keyDown}, function(ev)
-    if (timer.secondsSinceEpoch() - timeFirstControl) > module.timeFrame then
-        timeFirstControl, firstDown, secondDown = 0, false, false
-    end
+-- module.eventWatcher = eventtap.new({events.flagsChanged, events.keyDown}, function(ev)
+--     if (timer.secondsSinceEpoch() - timeFirstControl) > module.timeFrame then
+--         timeFirstControl, firstDown, secondDown = 0, false, false
+--     end
 
-    if ev:getType() == events.flagsChanged then
-        if noFlags(ev) and firstDown and secondDown then
-            ToggleApp("Emacs")
-            timeFirstControl, firstDown, secondDown = 0, false, false
-        elseif onlyCtrl(ev) and not firstDown then
-            firstDown = true
-            timeFirstControl = timer.secondsSinceEpoch()
-        elseif onlyCtrl(ev) and firstDown then
-            secondDown = true
-        elseif not noFlags(ev) then
-            timeFirstControl, firstDown, secondDown = 0, false, false
-        end
-    else
-        timeFirstControl, firstDown, secondDown = 0, false, false
-    end
-    return false
-end):start()
+--     if ev:getType() == events.flagsChanged then
+--         if noFlags(ev) and firstDown and secondDown then
+--             ToggleApp("Emacs")
+--             timeFirstControl, firstDown, secondDown = 0, false, false
+--         elseif onlyCtrl(ev) and not firstDown then
+--             firstDown = true
+--             timeFirstControl = timer.secondsSinceEpoch()
+--         elseif onlyCtrl(ev) and firstDown then
+--             secondDown = true
+--         elseif not noFlags(ev) then
+--             timeFirstControl, firstDown, secondDown = 0, false, false
+--         end
+--     else
+--         timeFirstControl, firstDown, secondDown = 0, false, false
+--     end
+--     return false
+-- end):start()

@@ -7,10 +7,6 @@
 # ---------------
 
 # ENV
-if [ ! -f ~/dotfiles/.envrc ]; then
-  z4h source "$HOME/dotfiles/.envrc"
-fi
-
 # Reset the paths
 if [ -x /usr/libexec/path_helper ]; then
   unset PATH
@@ -18,89 +14,34 @@ if [ -x /usr/libexec/path_helper ]; then
 fi
 
 # Homebrew
-ARCH=$(uname -m)
-if [ "${ARCH}" = "x86_64" ]; then
-  # Autoload /usr/local/bin from path_helper if mac
-  if [ "$(sysctl -in sysctl.proc_translated)" = "1" ]; then
-#    echo "Running on Rosetta 2"
-  else
-#    echo "Running on Native Intel"
-  fi
-elif [ "${ARCH}" = "arm64" ]; then
-  export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
-#  echo "Running on ARM64"
-else
-#  echo "Running on Unknown architecture: ${ARCH}"
-fi
-
-# ---------------
-# Alias
-# ---------------
-
-# XDG
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_STATE_HOME="$HOME/.local/state"
-#export XDG_RUNTIME_DIR="/run/user/$UID"
-
-# asdf
-export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
-export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
-z4h source -- ${HOMEBREW_PREFIX:+$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh}
+source ${HOMEBREW_PREFIX:+$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh}
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 
 # Dart
 if type "dart" > /dev/null 2>&1; then
-  export PATH="$HOME/.pub-cache/bin:$PATH"
+    export PATH="$HOME/.pub-cache/bin:$PATH"
 fi
 
+# Flutter
 if type "flutter" > /dev/null 2>&1; then
-  export FLUTTER_ROOT=$(asdf where flutter)
+    export FLUTTER_ROOT=$(asdf where flutter)
 fi
 
 # Android
 if [ -d "$HOME/Library/Android/sdk/platform-tools" ]; then
-  export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH"
+    export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH"
 fi
+
+compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
 
 # git-delta
 if ! type "delta" > /dev/null 2>&1; then
-  echo "delta is not installed, please install it for git diffs with the following command."
-  echo "  brew install git-delta"
+    echo "delta is not installed, please install it for git diffs with the following command."
+    echo "  brew install git-delta"
 fi
 
 # hammerspoon
 # defaults write org.hammerspoon.Hammerspoon MJConfigFile "~/.config/hammerspoon/init.lua"
-
-# Android
-export ANDROID_HOME="$XDG_DATA_HOME"/android
-export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
-
-# lesshist
-export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
-
-# gnupghome
-export GNUPGHOME="$XDG_DATA_HOME"/gnupg
-
-# terminfo
-export TERMINFO="$XDG_DATA_HOME"/terminfo
-export TERMINFO_DIRS="$XDG_DATA_HOME"/terminfo:/usr/share/terminfo
-
-# node
-export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
-
-# python
-export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
-
-# zsh
-compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
-export HISTFILE="$XDG_STATE_HOME"/zsh/history
-
-#if type "gcloud" > /dev/null 2>&1; then
-#  z4h source ~/.asdf/installs/gcloud/376.0.0/completion.zsh.inc
-#  z4h source ~/.asdf/installs/gcloud/376.0.0/path.zsh.inc
-#fi
 
 # Remove duplicates PATH
 typeset -gU PATH
@@ -117,6 +58,10 @@ fi
 if type "nvim" > /dev/null 2>&1; then
   alias vi="nvim"
   alias vim="nvim"
+fi
+
+if [ -e /Applications/Neovide.app ]; then
+  alias neovide='open /Applications/Neovide.app --env NEOVIDE_MULTIGRID'
 fi
 
 if type "emacs" > /dev/null 2>&1; then

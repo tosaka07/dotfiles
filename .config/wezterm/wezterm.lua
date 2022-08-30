@@ -51,11 +51,10 @@ return {
     -- "Weather Icons",
     "icons-in-terminal",
   },
-  color_scheme = "nord",
-  window_background_opacity = 0.95,
+  color_scheme = "Tomorrow Night",
+  window_background_opacity = 0.94,
   text_background_opacity = 1.0,
   window_decorations = "RESIZE",
-  skip_close_confirmation_for_processes_named = {"tmux"},
   leader = { key="Space", mods="CTRL" },
   keys = merge_table(tabkeys, commonkeys),
   key_tables = {
