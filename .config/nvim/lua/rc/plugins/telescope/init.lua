@@ -39,3 +39,14 @@ keymap.set('n', '<leader>fG', '<Cmd>Telescope projects<CR>', opts)
 keymap.set('n', '<leader>fb', '<Cmd>Telescope buffers<CR>', opts)
 keymap.set('n', '<leader>fe', '<Cmd>Telescope file_browser<CR>', opts)
 keymap.set('n', '<leader>fj', '<Cmd>Telescope diagnostics<CR>', opts)
+
+vim.api.nvim_create_augroup("dart", {})
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  group = "dart",
+  pattern = "*.dart",
+  callback = function()
+    keymap.set('n', '<leader>fm', function()
+      require("telescope").extensions.flutter.commands()
+    end)
+  end
+})

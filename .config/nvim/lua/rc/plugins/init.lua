@@ -267,7 +267,7 @@ local function init()
     "ahmedkhalf/project.nvim",
     after = "telescope.nvim",
     config = function()
-      -- require("rc.plugins.project")
+      require("rc.plugins.project")
     end
   }
 

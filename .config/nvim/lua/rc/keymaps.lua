@@ -62,10 +62,10 @@ keymap('n', '<leader>j', '<C-w>j', opts)
 keymap('n', '<leader>l', '<C-w>l', opts)
 
 -- Resize window
-keymap("n", "<C-Up>", ":resize -2<CR>", opts)
-keymap("n", "<C-Down>", ":resize +2<CR>", opts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+keymap("n", "<leader>sj", ":resize -3<CR>", opts)
+keymap("n", "<leader>sk", ":resize +3<CR>", opts)
+keymap("n", "<leader>sl", ":vertical resize -3<CR>", opts)
+keymap("n", "<leader>sh", ":vertical resize +3<CR>", opts)
 
 -- Split window
 keymap('n', '<leader>ss', ':split<Return><C-w>w', opts)

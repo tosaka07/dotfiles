@@ -4,16 +4,11 @@ if not status_ok then
 end
 
 null_ls.setup {
+  sources = {
+    null_ls.builtins.formatting.prettier.with {
+      prettier_local = "node_modules/.bin"
+    }
+  },
   on_attach = function(client, bufnr)
-    if client.server_capabilities.documentFormattingProvider then
-      vim.cmd("nnoremap <silent><buffer> <Leader>f :lua vim.lsp.buf.formatting()<CR>")
-
-      -- format on save
-      vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()")
-    end
-
-    if client.server_capabilities.documentRangeFormattingProvider then
-      vim.cmd("xnoremap <silent><buffer> <Leader>f :lua vim.lsp.buf.range_formatting({})<CR>")
-    end
   end,
 }
