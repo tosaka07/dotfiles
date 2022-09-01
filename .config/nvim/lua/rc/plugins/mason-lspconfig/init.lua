@@ -24,13 +24,15 @@ local on_attach = function(client, bufnr)
   -- vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'gf', vim.lsp.buf.formatting, bufopts)
 
-  vim.cmd [[
-    augroup lsp_document_highlight
-      autocmd! * <buffer>
-      autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
-      autocmd CursorMoved,CursorMovedI <buffer> lua vim.lsp.buf.clear_references()
-    augroup END
-  ]]
+  if client.resolved_capabilities.document_highlight then
+    vim.cmd [[
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved,CursorMovedI <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+    ]]
+  end
 end
 
 local lspconfig = require("lspconfig")

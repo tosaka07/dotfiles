@@ -4,7 +4,6 @@ dapui.setup()
 
 local opts = { noremap = true, silent = true }
 vim.keymap.set('n', '<leader>bu', function() dapui.toggle() end, opts)
-vim.keymap.set('n', '<leader>br', function() dapui.clear_breakpoints() end, opts)
 
 -- TODO: Lua
 vim.cmd([[
