@@ -84,6 +84,21 @@
            (interprogram-paste-function . 'copy-from-osx))
   :config (defalias 'yes-or-no-p 'y-or-n-p))
 
+(leaf *frame-transparency
+  :when window-system
+  :preface
+  (defun my/change-transparency (&optional num)
+    "Sets the transparency of the frame window. 0=transparent/100=opaque"
+    (interactive (list
+                  (read-number "Transparency Value 0 - 100 opaque: " 100)))
+    (let ((diff-active-and-inactive-frame 4))
+      (set-frame-parameter nil 'alpha
+                           (cons num (- num diff-active-and-inactive-frame)))
+      (add-to-list 'default-frame-alist
+                   `(alpha . (,num . ,(- num diff-active-and-inactive-frame))))))
+ :config
+  (my/change-transparency 91))
+
 (leaf exec-path-from-shell
   :doc "Make Emacs use the $PATH set up by the user's shell"
   :url "https://github.com/purcell/exec-path-from-shell"
