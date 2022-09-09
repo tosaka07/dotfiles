@@ -53,6 +53,9 @@ if type "exa" > /dev/null 2>&1; then
   alias la="exa -la"
   alias lt="exa -L=2 -T"
   alias lt3="exa -L=3 -T"
+else
+  echo "exa is not installed, please install it for customized ls with the following command."
+  echo "  brew install exa"
 fi
 
 if type "nvim" > /dev/null 2>&1; then
@@ -214,4 +217,12 @@ function create-gif() {
   else
     _error "ffmpeg not found."
   fi
+}
+
+function archive-screenshots() {
+  local saved_dir=$HOME/Pictures/Screenshot
+  local archive_dir="$HOME/Pictures/Screenshot_archive/$(date '+%Y-%m-%d')"
+  mkdir -p $archive_dir
+  mv $HOME/Pictures/Screenshot/* $archive_dir
+  echo "Archived the screenshots to $archive_dir"
 }

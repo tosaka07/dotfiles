@@ -1,0 +1,27 @@
+## Screenshot
+mkdir -p ~/Pictures/Screenshot
+defaults write com.apple.screencapture type png
+defaults write com.apple.screencapture name Screenshot
+defaults write com.apple.screencapture location ~/Pictures/Screenshot/
+defaults write com.apple.screencapture show-thumbnail -bool false
+
+## Dock
+defaults write com.apple.dock tilesize -int 36
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock show-recents -bool false
+defaults write com.apple.dock mineffect -string scale
+
+## Finder
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+defaults write com.apple.finder AppleShowAllFiles -bool true
+defaults write com.apple.finder FXPreferredViewStyle -string clmv
+
+## Mission Control
+defaults write com.apple.dock mru-spaces -bool false
+
+## Xcode
+defaults write com.apple.dt.Xcode ShowBuildOperationDuration -bool true
+
+killall Dock
+killall SystemUIServer
+killall Finder
