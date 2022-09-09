@@ -40,20 +40,20 @@
   :tag "builtin" "internal"
   :bind ("C-x C-w" . kill-this-buffer)
   :preface (defun general-init-hook nil
-              (menu-bar-mode -1)
-              (when-let ((gls (executable-find "gls")))
-                (setq insert-directory-program gls dired-use-ls-dired t)
-                (setq dired-listing-switches "-al --group-directories-first")))
-            (defun on-after-init ()
-              (unless (display-graphic-p (selected-frame))
-                (set-face-background 'default "unspecified-bg" (selected-frame))))
-            (defun copy-from-osx ()
-              (shell-command-to-string "pbpaste"))
-            (defun paste-to-osx (text &optional push)
-              (let ((process-connection-type nil))
-                (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-                  (process-send-string proc text)
-                  (process-send-eof proc))))
+             (menu-bar-mode -1)
+             (when-let ((gls (executable-find "gls")))
+               (setq insert-directory-program gls dired-use-ls-dired t)
+               (setq dired-listing-switches "-al --group-directories-first")))
+  (defun on-after-init ()
+    (unless (display-graphic-p (selected-frame))
+      (set-face-background 'default "unspecified-bg" (selected-frame))))
+  (defun copy-from-osx ()
+    (shell-command-to-string "pbpaste"))
+  (defun paste-to-osx (text &optional push)
+    (let ((process-connection-type nil))
+      (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+        (process-send-string proc text)
+        (process-send-eof proc))))
   :hook ((after-init-hook . general-init-hook)
          (window-setup-hook . on-after-init))
   :setq (make-backup-files . nil)
@@ -96,8 +96,8 @@
                            (cons num (- num diff-active-and-inactive-frame)))
       (add-to-list 'default-frame-alist
                    `(alpha . (,num . ,(- num diff-active-and-inactive-frame))))))
- :config
-  (my/change-transparency 91))
+  :config
+  (my/change-transparency 88))
 
 (leaf exec-path-from-shell
   :doc "Make Emacs use the $PATH set up by the user's shell"
@@ -174,32 +174,32 @@
   :straight (icons-in-terminal :type git :host github :repo "tosaka07/icons-in-terminal.el"))
 
 (leaf modus-themes
-  :disabled t
   :doc "Highly accessible themes (WCAG AAA)"
   :url "https://github.com/protesilaos/modus-themes"
   :straight t
   :init
   (setq
-        modus-themes-mode-line '(borderless)
-        modus-themes-italic-constructs t
-        modus-themes-bold-constructs t
-        modus-themes-mixed-fonts nil
-        modus-themes-subtle-line-numbers nil
-        modus-themes-intense-mouseovers nil
-        modus-themes-deuteranopia t
-        modus-themes-tabs-accented t
-        modus-themes-variable-pitch-ui nil
-        modus-themes-inhibit-reload t
-        modus-themes-region '(accented)
-        modus-themes-syntax '(alt-syntax faint)
-        modus-themes-headings
-        '((1 . (rainbow overline background 1.4))
-          (2 . (rainbow background 1.3))
-          (3 . (rainbow bold 1.2))
-          (t . (semilight 1.1))))
+   modus-themes-mode-line '(borderless)
+   modus-themes-italic-constructs t
+   modus-themes-bold-constructs t
+   modus-themes-mixed-fonts nil
+   modus-themes-subtle-line-numbers nil
+   modus-themes-intense-mouseovers nil
+   modus-themes-deuteranopia t
+   modus-themes-tabs-accented t
+   modus-themes-variable-pitch-ui nil
+   modus-themes-inhibit-reload t
+   modus-themes-region '(accented)
+   modus-themes-syntax '(alt-syntax faint)
+   modus-themes-headings
+   '((1 . (rainbow overline background 1.4))
+     (2 . (rainbow background 1.3))
+     (3 . (rainbow bold 1.2))
+     (t . (semilight 1.1))))
   (modus-themes-load-vivendi))
 
 (leaf doom-themes
+  :disabled t
   :doc "A megapack of themes for GNU Emacs."
   :straight t
   :custom
@@ -211,6 +211,7 @@
   )
 
 (leaf doom-modeline
+  :disabled t
   :doc "A fancy and fast mode-line inspired by minimalism design."
   :url "https://github.com/seagle0128/doom-modeline"
   :straight t
@@ -229,6 +230,19 @@
   (doom-modeline-modal-icon . t)
   (doom-modeline-env-version . t)
   )
+
+(leaf moody
+  :straight t
+  :setq
+  (x-underline-at-descent-line . t)
+  :config
+  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode)
+  (moody-replace-eldoc-minibuffer-message-function))
+
+(leaf minions
+  :straight t
+  :global-minor-mode (minions-mode))
 
 (leaf rainbow-delimiters
   :doc "Highlight brackets according to their depth"
@@ -313,11 +327,10 @@
     :straight nil
     :bind
     (:vertico-map
-      ("RET" . vertico-directory-enter)
-      ("DEL" . vertico-directory-delete-char)
-      ("M-DEL" . vertico-directory-delete-word))
-    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
-)
+     ("RET" . vertico-directory-enter)
+     ("DEL" . vertico-directory-delete-char)
+     ("M-DEL" . vertico-directory-delete-word))
+    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)))
 
 (leaf consult
   :doc "Consulting completing-read"
@@ -368,7 +381,10 @@
   :straight t
   :bind
   ("C-c f" . affe-find)
-  ("C-c C-f" . affe-grep))
+  ("C-c C-f" . affe-grep)
+  :setq
+  (affe-highlight-function . 'orderless-highlight-matches)
+  (affe-regexp . 'orderless-pattern-compiler))
 
 (leaf marginalia
   :doc "Marginalia in the minibuffer"
@@ -381,11 +397,10 @@
   :url "https://github.com/oantolin/orderless"
   :straight t
   :setq
-  (completion-styles . '(orderless))
+  (completion-styles . '(orderless basic))
   (completion-category-overrides . '((file (styles basic partial-completion)))))
 
 (leaf corfu
-  :disabled t
   :doc "Completion Overlay Region FUnction"
   :url "https://github.com/minad/corfu"
   :straight t
@@ -412,8 +427,18 @@
       (corfu-doc-terminal-mode +1)))
   )
 
+(leaf kind-icon
+  :doc "Completion kind text/icon prefix labelling for emacs in-region completion"
+  :url "https://github.com/jdtsmith/kind-icon"
+  :straight t
+  :after corfu
+  :custom
+  (kind-icon-default-face . 'corfu-default)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
+  )
+
 (leaf cape
-  :disabled t
   :doc "Completion At Point Extensions"
   :url "https://github.com/minad/cape"
   :straight t
@@ -475,12 +500,12 @@
   :straight t
   :global-minor-mode global-whitespace-mode
   :custom ((whitespace-styles . '(face
-                                 trailing
-                                 tabs
-                                 spaces
-                                 empty
-                                 space-mark
-                                 tab-mark))
+                                  trailing
+                                  tabs
+                                  spaces
+                                  empty
+                                  space-mark
+                                  tab-mark))
            (whitespace-display-mappings . '((space-mark ?\u3000 [?\u25a1])
                                             (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
            (whitespace-space-regexp . "\\(\u3000+\\)")
@@ -499,72 +524,79 @@
   :straight t
   :mode ("\\.md\\'" . gfm-mode))
 
-(leaf lsp-mode
-  :disabled t
-  :doc "LSP mode"
-  :url "https://github.com/emacs-lsp/lsp-mode"
-  :straight t
-  :after orderless cape
-  :commands lsp lsp-deferred
-  :custom `((lsp-keymap-prefix . "C-c l")
-            (read-process-output-max . ,(* 1 1024 1024))  ;; 1MB
-            (lsp-auto-guess-root . nil)
-            (lsp-headerline-breadcrumb-enable . t)
-            (lsp-log-io . nil)
-            (lsp-trace . nil)
-            (lsp-print-performance . nil)
-            (lsp-idle-delay . 0.5)
-            (lsp-document-sync-method . 2)
-            (lsp-response-timeout . 5)
-            (lsp-prefer-flymake . nil)
-            (lsp-completion-enable . t)
-            (lsp-enable-indentation . nil)
-            (lsp-restart . 'ignore)
-            (lsp-completion-provider . :none)))
+(leaf lsp
+  (leaf lsp-mode
+    :doc "LSP mode"
+    :url "https://github.com/emacs-lsp/lsp-mode"
+    :straight t
+    :after orderless cape
+    :commands lsp lsp-deferred
+    :custom `((lsp-keymap-prefix . "C-c l")
+              (read-process-output-max . ,(* 1 1024 1024))  ;; 1MB
+              (lsp-auto-guess-root . nil)
+              (lsp-headerline-breadcrumb-enable . t)
+              (lsp-log-io . nil)
+              (lsp-trace . nil)
+              (lsp-print-performance . nil)
+              (lsp-idle-delay . 0.5)
+              (lsp-document-sync-method . 2)
+              (lsp-response-timeout . 5)
+              (lsp-prefer-flymake . nil)
+              (lsp-completion-enable . t)
+              (lsp-enable-indentation . nil)
+              (lsp-restart . 'ignore)
+              (lsp-completion-provider . :none)))
+  (leaf lsp-ui
+    :doc "UI modules for lsp-mode"
+    :url "https://github.com/emacs-lsp/lsp-ui"
+    :straight t
+    :hook (lsp-mode-hook . lsp-ui-mode)
+    :preface
+    (defun ladicle/toggle-lsp-ui-doc ()
+      (interactive)
+      (if lsp-ui-doc-mode
+          (progn
+            (lsp-ui-doc-mode -1)
+            (lsp-ui-doc--hide-frame))
+        (lsp-ui-doc-mode 1)))
 
-(leaf lsp-ui
-  :disabled t
-  :doc "UI modules for lsp-mode"
-  :url "https://github.com/emacs-lsp/lsp-ui"
-  :straight t
-  :hook (lsp-mode-hook . lsp-ui-mode)
-  :preface
-  (defun ladicle/toggle-lsp-ui-doc ()
-    (interactive)
-    (if lsp-ui-doc-mode
-        (progn
-          (lsp-ui-doc-mode -1)
-          (lsp-ui-doc--hide-frame))
-      (lsp-ui-doc-mode 1)))
+    :bind (lsp-mode-map
+           :package lsp-mode
+           ("C-c C-r" . lsp-ui-peek-find-references)
+           ("C-c C-j" . lsp-ui-peek-find-definitions)
+           ("C-c s"   . lsp-ui-sideline-mode)
+           ("C-c d"   . ladicle/toggle-lsp-ui-doc)
+           ("C-c i"   . lsp-ui-doc-focus-frame))
+    :custom ((lsp-ui-doc-header . t)
+             (lsp-ui-doc-delay . 2)
+             (lsp-ui-doc-include-signature . t)
+             (lsp-ui-doc-alignment . 'window)
+             (lsp-ui-doc-max-height . 30)
+             (lsp-ui-doc-show-with-mouse . nil)
+             (lsp-ui-doc-show-with-cursor . t)
+             (lsp-ui-sideline-enable . nil)
+             (lsp-ui-sideline-ignore-duplicate . t)
+             (lsp-ui-sideline-show-symbol . t)
+             (lsp-ui-sideline-show-hover . t)
+             (lsp-ui-sideline-show-diagnostics . nil)
+             (lsp-ui-sideline-show-code-actions . nil)
+             (lsp-ui-imenu-enable . nil)))
+  
+  )
 
-  :bind (lsp-mode-map
-         :package lsp-mode
-         ("C-c C-r" . lsp-ui-peek-find-references)
-         ("C-c C-j" . lsp-ui-peek-find-definitions)
-         ("C-c s"   . lsp-ui-sideline-mode)
-         ("C-c d"   . ladicle/toggle-lsp-ui-doc)
-         ("C-c i"   . lsp-ui-doc-focus-frame))
-  :custom ((lsp-ui-doc-header . t)
-           (lsp-ui-doc-delay . 2)
-           (lsp-ui-doc-include-signature . t)
-           (lsp-ui-doc-alignment . 'window)
-           (lsp-ui-doc-max-height . 30)
-           (lsp-ui-doc-show-with-mouse . nil)
-           (lsp-ui-doc-show-with-cursor . t)
-           (lsp-ui-sideline-enable . nil)
-           (lsp-ui-sideline-ignore-duplicate . t)
-           (lsp-ui-sideline-show-symbol . t)
-           (lsp-ui-sideline-show-hover . t)
-           (lsp-ui-sideline-show-diagnostics . nil)
-           (lsp-ui-sideline-show-code-actions . nil)
-           (lsp-ui-imenu-enable . nil)))
+
 
 (leaf lsp-dart
   :straight t
   :hook (dart-mode . lsp)
   )
 
+(leaf dart-mode
+  :straight t
+  :mode ("\\.dart\\'"))
+
 (leaf lsp-bridge
+  :disabled t
   :doc "Fastest LSP client for Emacs"
   :url "https://github.com/manateelazycat/lsp-bridge"
   :load-path ("~/workspace/sources/github.com/manateelazycat/lsp-bridge/")
@@ -581,41 +613,38 @@
   :config (global-lsp-bridge-mode)
   )
 
-;; (leaf dart-mode
-;;   :straight t
-;;   :mode ("\\.dart\\'"))
 
 (leaf tree-sitter-langs
   :straight (tree-sitter-langs :type git :host github :repo "tosaka07/tree-sitter-langs"))
 
 (leaf tree-sitter
-    :url "https://github.com/ubolonton/emacs-tree-sitter"
-    :straight t
-    :require tree-sitter-langs
-    :global-minor-mode (global-tree-sitter-mode)
-    :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
-    :config
-    (tree-sitter-require 'tsx) ;; TSX
-    (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
-    ;; Hightlight
-    (tree-sitter-hl-add-patterns 'tsx
-      [
-       ;; styled.div``
-       (call_expression
-        function: (member_expression
-                   object: (identifier) @function.call
-                   (.eq? @function.call "styled"))
-        arguments: ((template_string) @property.definition
-                    (.offset! @property.definition 0 1 0 -1)))
-       ;; styled(Component)``
-       (call_expression
-        function: (call_expression
-                   function: (identifier) @function.call
-                   (.eq? @function.call "styled"))
-        arguments: ((template_string) @property.definition
-                    (.offset! @property.definition 0 1 0 -1)))
-       ])
-    )
+  :url "https://github.com/ubolonton/emacs-tree-sitter"
+  :straight t
+  :require tree-sitter-langs
+  :global-minor-mode (global-tree-sitter-mode)
+  :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
+  :config
+  (tree-sitter-require 'tsx) ;; TSX
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
+  ;; Hightlight
+  (tree-sitter-hl-add-patterns 'tsx
+    [
+     ;; styled.div``
+     (call_expression
+      function: (member_expression
+                 object: (identifier) @function.call
+                 (.eq? @function.call "styled"))
+      arguments: ((template_string) @property.definition
+                  (.offset! @property.definition 0 1 0 -1)))
+     ;; styled(Component)``
+     (call_expression
+      function: (call_expression
+                 function: (identifier) @function.call
+                 (.eq? @function.call "styled"))
+      arguments: ((template_string) @property.definition
+                  (.offset! @property.definition 0 1 0 -1)))
+     ])
+  )
 
 ;; (leaf dart-server
 ;;   :straight t
