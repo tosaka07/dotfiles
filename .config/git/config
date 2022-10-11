@@ -141,6 +141,13 @@
 [user]
   name = tosaka07
   email = tosakaup@gmail.com
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvcAZ9jZqsuhal3eUhcz3TCztfXaUfv5XqH+bmdZ2Dv
+[commit]
+  gpgsign = true
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 [fetch]
 	prune = true
 [ghq]
