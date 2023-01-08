@@ -1,52 +1,81 @@
-local opt = vim.opt
+local global = require("rc.global")
 
--- Encoding
-opt.encoding = "utf-8"
-opt.fileencodings = "utf-8,sjis,iso-2022-jp,euc-jp"
-opt.fileformats = "unix,mac,dos"
+local function load_ons()
+  local global_local = {
+    -- Encoding
+    encoding = "utf-8",
+    fileencodings = "utf-8,sjis,iso-2022-jp,euc-jp",
+    fileformats = "unix,mac,dos",
+    -- Number
+    number = true,
+    relativenumber = false,
+    signcolumn = "yes",
+    -- Backup
+    swapfile = false,
+    backup = false,
+    writebackup = false,
+    undodir = global.cache_dir .. "undo/",
+    undofile = true,
+    -- File
+    hidden = true,
+    autoread = true,
+    conceallevel = 0,
+    history = 2000,
+    -- Indent
+    smartindent = true,
+    expandtab = true,
+    tabstop = 2,
+    shiftwidth = 2,
+    softtabstop = 2,
+    -- Wrap
+    wrap = false,
+    -- Seaching
+    hlsearch = true,
+    -- Mouse
+    mouse = 'a',
+    updatetime = 300,
+    -- Split
+    splitbelow = true,
+    splitright = true,
+    -- highlights
+    termguicolors = true,
+    cursor = true,
+    cursorline = true,
+    winblend = 0,
+    wildons = 'pum',
+    pumblend = 5,
+    background = 'dark',
+    -- Command
+    cmdheight = 0,
+    -- Status line
+    laststatus = 3, -- Use global status line
+    -- bell
+    errorbells = false,
+    visualbell = false,
+    -- clipboard
+    clipboard = "unnamedplus",
+  }
 
--- Number
-opt.number = true
-opt.relativenumber = false
-opt.signcolumn = "yes"
+  local function isempty(s)
+    return s == nil or s == ""
+  end
 
--- Backup
-opt.swapfile = false
-opt.backup = false
-opt.writebackup = false
+  -- custom python provider
+  local conda_prefix = os.getenv("CONDA_PREFIX")
+  if not isempty(conda_prefix) then
+    vim.g.python_host_prog = conda_prefix .. "/bin/python"
+    vim.g.python3_host_prog = conda_prefix .. "/bin/python"
+  elseif global.is_mac then
+    vim.g.python_host_prog = "/usr/bin/python"
+    vim.g.python3_host_prog = "/usr/local/bin/python3"
+  else
+    vim.g.python_host_prog = "/usr/bin/python"
+    vim.g.python3_host_prog = "/usr/bin/python3"
+  end
 
--- File
-opt.hidden = true
-opt.autoread = true
-opt.conceallevel = 0
+  for name, value in pairs(global_local) do
+    vim.o[name] = value
+  end
+end
 
--- Completions
-opt.completeopt = { "menuone", "noselect" }
-
--- Indent
-opt.smartindent = true
-opt.expandtab = true
-opt.tabstop = 2
-opt.shiftwidth = 2
-opt.softtabstop = 2
-
--- Seaching
-opt.hlsearch = true
-
--- Mouse
-opt.mouse = 'a'
-
-opt.updatetime = 300
-
--- Split
-opt.splitbelow = true
-opt.splitright = true
-
--- highlights
-opt.termguicolors = true
-opt.cursorline = true
-opt.termguicolors = true
-opt.winblend = 0
-opt.wildoptions = 'pum'
-opt.pumblend = 5
-opt.background = 'dark'
+load_ons()

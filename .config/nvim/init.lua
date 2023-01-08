@@ -1,6 +1,3 @@
-require 'impatient'
-
-require 'rc/base'
-require 'rc/options'
-require 'rc/keymaps'
-require 'rc/plugins'
+if not vim.g.vscode then
+  require("rc")
+end
