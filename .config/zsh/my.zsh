@@ -17,6 +17,9 @@ fi
 source ${HOMEBREW_PREFIX:+$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh}
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 
+# sqlite3
+export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"
+
 # Dart
 if type "dart" > /dev/null 2>&1; then
     export PATH="$HOME/.pub-cache/bin:$PATH"
