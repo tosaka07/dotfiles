@@ -81,20 +81,20 @@ local leader = {
   },
   d = {
     name = "+dial",
-    i = { 
+    i = {
       function()
         -- TODO: lua から呼べばいいがうまく動かないから調査
         require("dial.map")
         vim.api.nvim_command(":DialIncrement")
       end,
-      "increment" 
+      "increment"
     },
-    d = { 
+    d = {
       function()
         require("dial.map")
         vim.api.nvim_command(":DialDecrement")
       end,
-      "increment" 
+      "decrement"
     },
   },
   e = {
