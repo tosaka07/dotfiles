@@ -1,5 +1,0 @@
-ENV.sh
-*.zwc
-.config/nvim/.netrwhist
-.config/zsh/.zsh_history
-.config/zsh/.zcompdump

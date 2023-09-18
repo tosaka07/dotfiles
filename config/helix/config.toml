@@ -1,0 +1,58 @@
+theme = "mytheme"
+
+[editor]
+# 行表示
+line-number = "relative"
+# マウス
+mouse = true
+# 行ライン
+cursorline = true
+# 自動的に閉じタグを入力
+auto-pairs = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.statusline]
+right = ["diagnostics", "selections", "position", "file-encoding", "file-line-ending", "file-type"]
+separator = "│"
+mode.normal = "NORMAL"
+mode.insert = "INSERT"
+mode.select = "SELECT"
+
+[editor.file-picker]
+hidden = false
+
+[editor.lsp]
+display-messages = true
+
+[editor.whitespace.render]
+space = "all"
+tab = "all"
+newline = "none"
+
+[editor.indent-guides]
+render = true
+
+[keys.normal]
+C-s = ":w"
+C-n = "move_line_down"
+C-p = "move_line_up"
+C-f = "move_char_right"
+C-b = "move_char_left"
+C-e = "goto_line_end"
+C-a = "goto_line_start"
+C-k = "kill_to_line_end"
+g = { a = "code_action" }
+
+[keys.insert]
+j = { j = "normal_mode" }
+C-n = "move_line_down"
+C-p = "move_line_up"
+C-f = "move_char_right"
+C-b = "move_char_left"
+C-e = "goto_line_end"
+C-a = "goto_line_start"
+C-k = "kill_to_line_end"

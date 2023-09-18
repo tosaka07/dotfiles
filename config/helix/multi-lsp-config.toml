@@ -1,0 +1,10 @@
+log-file = "/tmp/multi-lsp-proxy.log"
+
+[[language]]
+name = "python"
+command = "pyright-langserver"
+args = ["--stdio"]
+
+[[language]]
+name = "python"
+command = "ruff-lsp"

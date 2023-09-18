@@ -1,0 +1,13 @@
+
+[[language]]
+name = "python"
+scope = "source.python"
+injection-regex = "python"
+file-types = ["py","pyi","py3","pyw","ptl",".pythonstartup",".pythonrc","SConstruct"]
+shebangs = ["python"]
+roots = ["pyproject.toml", "Poetry.lock"]
+comment-token = "#"
+indent = { tab-width = 4, unit = "    " }
+config = { settings = { args = [] } }
+auto-format = true
+formatter = { command = "black", args = ["-", "-q"] }
