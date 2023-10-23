@@ -98,11 +98,16 @@ export GPG_TTY=$TTY
 # ----------------------------------------------
 z4h load ohmyzsh/ohmyzsh/plugins/z
 
-
 # ----------------------------------------------
 # ASDF
 # ----------------------------------------------
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
+
+
+# ----------------------------------------------
+# google-cloud-sdk
+# ----------------------------------------------
+. /opt/homebrew/share/google-cloud-sdk/path.zsh.inc
 
 # ----------------------------------------------
 # Key bindings
@@ -132,6 +137,8 @@ compdef _directories md
 alias ls="eza --icons"
 alias ll="eza -lF --time-style=long-iso --icons"
 alias la="eza -lFa --time-style=long-iso --icons"
+alias lt="eza -T"
+alias lta="eza -T -a"
 alias tree="eza -FT --icons"
 
 alias vi="nvim"
