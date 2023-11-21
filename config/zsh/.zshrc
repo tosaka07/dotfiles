@@ -266,3 +266,12 @@ function archive-screenshots() {
   mv $HOME/Pictures/Screenshot/* $archive_dir
   echo "Archived the screenshots to $archive_dir"
 }
+
+function asdf-plugin-install() {
+  # .tool-versions ファイルの存在を確認
+  if [ ! -f ".tool-versions" ]; then
+      echo ".tool-versions ファイルが見つかりません。"
+      exit 1
+  fi
+  awk '{print $1}' .tool-versions | xargs -I {} asdf plugin add {}
+}

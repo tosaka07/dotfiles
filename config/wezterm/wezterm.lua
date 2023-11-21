@@ -1,4 +1,4 @@
-local wezterm = require 'wezterm';
+local wezterm = require("wezterm")
 wezterm.add_to_config_reload_watch_list(wezterm.config_dir)
 
 local act = wezterm.action
@@ -55,7 +55,7 @@ return {
 		-- "Weather Icons",
 		"icons-in-terminal",
 	}),
-	color_scheme = "Tomorrow Night",
+	color_scheme = "Catppuccin Macchiato",
 	window_background_opacity = 0.8,
 	text_background_opacity = 0.8,
 	macos_window_background_blur = 12,
