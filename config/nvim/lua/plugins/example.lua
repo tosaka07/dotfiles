@@ -8,8 +8,17 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "catppuccin-macchiato",
+      colorscheme = "catppuccin-mocha",
     },
+  },
+
+  {
+    "catppuccin/nvim",
+    config = function()
+      require("catppuccin").setup({
+        transparent_background = true,
+      })
+    end,
   },
 
   --   -- change trouble config

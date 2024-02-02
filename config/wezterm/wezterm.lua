@@ -42,6 +42,7 @@ local commonkeys = {
 }
 
 return {
+	front_end = "WebGpu",
 	use_ime = true,
 	font_size = 15,
 	font = wezterm.font_with_fallback({
@@ -55,10 +56,10 @@ return {
 		-- "Weather Icons",
 		"icons-in-terminal",
 	}),
-	color_scheme = "Catppuccin Macchiato",
-	window_background_opacity = 0.8,
-	text_background_opacity = 0.8,
-	macos_window_background_blur = 12,
+	color_scheme = "Catppuccin Mocha",
+	window_background_opacity = 0.7,
+	text_background_opacity = 0.7,
+	macos_window_background_blur = 16,
 	window_decorations = "RESIZE",
 	leader = { key = "Space", mods = "CTRL" },
 	keys = merge_table(tabkeys, commonkeys),

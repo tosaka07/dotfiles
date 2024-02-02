@@ -131,7 +131,7 @@
 
 [core]
   autocrlf = false
-  editor = "vim"
+  editor = "nvim"
   ignorecase = false
   quotepath = false
   pager = delta
@@ -188,9 +188,11 @@
 [delta]
   plus-style = "syntax #012800"
   minus-style = "syntax #340001"
-  syntax-theme = Visual Studio Dark+
+  syntax-theme = Catppuccin-mocha
   navigate = true
   line-numbers = true
 
 [interactive]
   diffFilter = delta --color-only
+[diff "sopsdiffer"]
+	textconv = sops -d

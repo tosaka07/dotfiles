@@ -92,17 +92,28 @@ typeset -gU PATH
 # ----------------------------------------------
 export GPG_TTY=$TTY
 
-
 # ----------------------------------------------
 # Plugins
 # ----------------------------------------------
 z4h load ohmyzsh/ohmyzsh/plugins/z
 
-# ----------------------------------------------
-# ASDF
-# ----------------------------------------------
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
 
+# ----------------------------------------------
+# RTX
+# ----------------------------------------------
+# if command -v mise > /dev/null 2>&1; then
+#   eval "$(mise activate zsh)"
+#   export FLUTTER_ROOT="$(mise where flutter)"
+#   alias asdf="mise"
+# fi
+
+
+# ----------------------------------------------
+# trash-cli
+# ----------------------------------------------
+if command -v trash-put > /dev/null 2>&1; then
+  alias rm="trash-put"
+fi
 
 # ----------------------------------------------
 # google-cloud-sdk
