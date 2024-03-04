@@ -1,0 +1,6 @@
+[tools]
+flutter = "3.16.5-stable"
+1password-cli = "2.24.0"
+go = "latest"
+ruby = "3.3.0"
+node = "20.11.0"

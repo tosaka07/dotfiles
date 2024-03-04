@@ -64,6 +64,7 @@ set -Ux FZF_DEFAULT_OPTS "\
 # ----------------------------------------------
 if type -q zoxide
     zoxide init fish | source
+    alias c="z"
 end
 
 # ----------------------------------------------
@@ -71,7 +72,8 @@ end
 # ----------------------------------------------
 
 function ghq_cd_fzf -d "Change dirctory to selected local repo managed by ghq."
-    set src (ghq list | fzf-tmux -p 80% --layout=reverse --preview "glow --style dark --width 80 "(ghq root)"/{}/README.md")
+    set -l input (commandline)
+    set src (ghq list | fzf-tmux -p 80% -q "$input" --layout=reverse --preview "glow --style dark --width 80 "(ghq root)"/{}/README.md")
     if test -n "$src"
         cd (ghq root)/"$src"
         commandline -f repaint
@@ -80,21 +82,23 @@ end
 bind \cg ghq_cd_fzf
 
 function history_fzf -d "Fuzzy search history"
-    set cmd (history | fzf-tmux -p 80% --layout reverse)
+    set -l input (commandline)
+    set cmd (history | fzf-tmux -p 80% -q "$input" --layout reverse)
     if test -n "$cmd"
-        commandline -i "$cmd"
+        commandline -r -- "$cmd"
     end
 end
 bind \cr history_fzf
 
 function zoxide_fzf -d "Change directory to selected directory managed by zoxide"
-    set src (zoxide query --list | fzf-tmux -p --layout=reverse --preview='ls {} --color always --icons' --preview-window=down,30%,sharp)
+    set -l input (commandline)
+    set src (zoxide query --list | fzf-tmux -p -q "$input" --layout=reverse --preview='ls {} --color always --icons' --preview-window=down,30%,sharp)
     if test -n "$src"
         cd $src
         commandline -f repaint
     end
 end
-bind \cz zoxide_fzf
+alias cdd=zoxide_fzf
 
 function prevd_without_newline
     prevd >/dev/null
